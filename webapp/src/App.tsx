@@ -9,8 +9,8 @@ function App(): JSX.Element {
 
   const dispatch = useAppDispatch();
   const call = () => {
-    dispatch(githubReducerActions.loadPullRequestContributors({
-      repoOwner: "ledgerwatch", repoName: "erigon", pullrequestNumber: 5891}));
+    dispatch(githubReducerActions.getContractAddressFromGithubRepo({
+      repoOwner: "fedecastelli", repoName: "corgit-test-hello-world"}));
   };
   return (
       <div onClick={call}>

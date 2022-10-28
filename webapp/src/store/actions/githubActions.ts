@@ -1,7 +1,18 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {PullRequest, PullRequestContributor, PullRequestState} from "../../utils/ProjectTypes/Project.types";
 import {Octokit} from "@octokit/rest";
+import axios, {AxiosResponse} from "axios";
 
+export const getContractAddressFromGithubRepo = createAsyncThunk<string | undefined, {repoOwner: string, repoName: string}>(
+    'github/getContractAddressFromGithubRepo',
+    async (params, thunkAPI) => {
+      const githubRawResponse: AxiosResponse = await axios.get(`https://raw.githubusercontent.com/${params.repoOwner}/${params.repoName}/master/.corgit.config`);
+      if (githubRawResponse.status === 200) {
+        const corgitConfig: {cgTokenAddress: string} = githubRawResponse.data;
+        return corgitConfig.cgTokenAddress;
+      } else return undefined;
+    }
+);
 
 export const loadPullRequest = createAsyncThunk<PullRequest, {repoOwner: string, repoName: string, pullrequestNumber: number}>(
     'github/loadPullRequestContributors',

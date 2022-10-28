@@ -3,9 +3,10 @@ import {Prices, Proof, ProofToMint, PullRequest} from "../../utils/ProjectTypes/
 import {createSlice} from "@reduxjs/toolkit";
 import {clearError} from "../actions/basicActions";
 import {ErrorsEnum} from "../../utils/ProjectTypes/Errors.enum";
-import {loadPullRequest} from "../actions/githubActions";
+import {getContractAddressFromGithubRepo, loadPullRequest} from "../actions/githubActions";
 
 export interface GithubReducer extends BaseReducer {
+  githubRepoContractAddress: string | undefined,
   pullRequest: PullRequest,
   mintedProofs: Proof[],
   mintedProofsLoading: boolean,
@@ -21,6 +22,7 @@ export interface GithubReducer extends BaseReducer {
 
 const initialState: GithubReducer = {
   dispatchError: undefined,
+  githubRepoContractAddress: undefined,
   pullRequest: undefined,
   mintedProofsLoading: false,
   mintedProofs: [],
@@ -42,6 +44,7 @@ export const githubReducerSlice = createSlice({
   },
   extraReducers:
       (builder) => {
+
         /** Github pull request contributors */
         builder.addCase(loadPullRequest.fulfilled, (state, action) => {
           state.pullRequest = action.payload;
@@ -49,12 +52,21 @@ export const githubReducerSlice = createSlice({
         builder.addCase(loadPullRequest.rejected, (state, action) => {
           state.dispatchError = { code: ErrorsEnum.PROOF_0005, message: "", action: "github/loadPullRequestContributors"};
         })
+
+        /** Github repository Corgit configuration **/
+        builder.addCase(getContractAddressFromGithubRepo.fulfilled, (state, action) => {
+          state.githubRepoContractAddress = action.payload;
+        })
+        builder.addCase(getContractAddressFromGithubRepo.rejected, (state, action) => {
+          state.dispatchError = { code: ErrorsEnum.PROOF_0005, message: "", action: "github/getContractAddressFromGithubRepo"};
+        })
       }
   }
 );
 
 export const githubReducerActions = {
-  loadPullRequestContributors: loadPullRequest,
+  getContractAddressFromGithubRepo: getContractAddressFromGithubRepo,
+  loadPullRequestContributors: loadPullRequest
 }
 
 export default githubReducerSlice.reducer

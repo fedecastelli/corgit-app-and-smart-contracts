@@ -8,9 +8,7 @@ import {ethers} from "ethers";
 
 const getContractAddressFromGithubRepo = async (repoOwner: string, repoName: string): Promise<string | undefined> => {
   const githubRawResponse: AxiosResponse = await axios.get(
-      `https://raw.githubusercontent.com/${repoOwner}/${repoName}/master/.corgit.config`, {
-        headers: {'Cache-Control': 'no-cache', 'Expires': '0', 'Pragma': 'no-cache'}
-      });
+      `https://raw.githubusercontent.com/${repoOwner}/${repoName}/master/.corgit.config`);
   if (githubRawResponse.status === 200) {
     const corgitConfig: {cgTokenAddress: string} = githubRawResponse.data;
     return corgitConfig.cgTokenAddress;

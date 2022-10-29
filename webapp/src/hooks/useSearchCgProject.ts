@@ -16,9 +16,6 @@ const getContractAddressFromGithubRepo = async (repoOwner: string, repoName: str
   } else return undefined;
 }
 
-<<<<<<< HEAD
-export const useSearchCgProject = () => {
-=======
 const getCgTokenInformation = async (params: {web3: Web3, cgTokenAbi: AbiItem, cgTokenAddress: string}): Promise<{
   tokenSymbol: string,
   distributionReward: number
@@ -36,8 +33,7 @@ const getCgTokenInformation = async (params: {web3: Web3, cgTokenAbi: AbiItem, c
   return {tokenSymbol: tokenSymbol, distributionReward: distributionReward};
 }
 
-export const useSearchCgProject = (address: string) => {
->>>>>>> feature/create-hooks
+export const useSearchCgProject = () => {
   const [status, setStatus] = useState<{
     loading: boolean,
     error: string,

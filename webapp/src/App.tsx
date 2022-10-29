@@ -9,9 +9,6 @@ import {routes} from "./App.Routes";
 
 
 function App(): JSX.Element {
-<<<<<<< HEAD
-
-=======
   /*
   const dispatch = useAppDispatch();
   const addressStore = useAppSelector(state => state.cgProject.tokenAddress);
@@ -36,7 +33,6 @@ function App(): JSX.Element {
   );
 }
 */
->>>>>>> feature/create-hooks
   return (
     <BrowserRouter>
       <Routes>

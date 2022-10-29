@@ -3,7 +3,7 @@ import {useAppDispatch} from "./reduxHooks";
 import {Contract, Signer} from "ethers";
 import {useContract} from "@web3modal/react";
 import {CONTRACTS_DETAILS} from "../utils/constants";
-import contributions, {contributionsReducerActions} from "../store/reducers/contributions";
+import {contributionsReducerActions} from "../store/reducers/contributions";
 
 export interface LoadProjectUserContributionsInterface {
   signer: Signer,

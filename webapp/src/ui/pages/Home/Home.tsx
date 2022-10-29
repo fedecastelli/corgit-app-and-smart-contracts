@@ -16,7 +16,6 @@ import { useNavigate } from 'react-router-dom';
  */
 const Home: React.FC<IHome> = (props) => {
   const { loading, address, error, checkNow } = useSearchCgProject();
-
   const [tokenSearchValue, setTokenSearchValue] = useState<string>("");
   const [searchCgProjectValue] = useDebounce(tokenSearchValue, 500);
   const navigate = useNavigate();
@@ -66,7 +65,6 @@ const Home: React.FC<IHome> = (props) => {
       <Box position={"absolute"} zIndex={-1} bottom={0} left={0}>
         <img src={"/img/CorGitHomeImage.png"}/>
       </Box>
-
     </Box>
   );
 };

@@ -120,13 +120,11 @@ export type Prices = {
  * Represent the core details for a given deployment, and all its contracts we have to interact
  */
 export type DeploymentContractsDetails = {
-  TPROOF_ROUTER_ADDRESS: address,
-  TPROOF_NFT_FACTORY_ADDRESS: address,
-  TPROOF_HASH_REGISTRY_ADDRESS: address,
-  DELEGATOR_ADDRESS: address,
-  TPROOF_ROUTER_ABI: AbiItem,
-  TPROOF_NFT_FACTORY_ABI: AbiItem,
-  TPROOF_HASH_REGISTRY_ABI: AbiItem
+  CG_FACTORY: address,
+  GITHUB_ADDRESS_REGISTER: address,
+  CG_FACTORY_ABI: AbiItem,
+  GITHUB_ADDRESS_REGISTER_ABI: AbiItem,
+  CG_PROJECT_ABI: AbiItem
 }
 
 /**

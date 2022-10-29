@@ -1,9 +1,5 @@
 import {ethers} from "hardhat";
-import {CgFactory, GithubAddressRegister} from "../../typechain-types";
-import {deployGithubAddressRegister} from "./SingleContracts/GithubAddressRegister";
-import {deployCgFactory} from "./SingleContracts/cgFactory";
-
-const githubABI = require("./GithubContractABI.json");
+import {GithubAddressRegister} from "../../typechain-types";
 
 export const associateGithubToWallet = async (
   chainId: number,
@@ -25,6 +21,7 @@ export const associateGithubToWallet = async (
   const githubContract = await contractFactory.attach(githubAddressRegisterContract);
 
   const transaction = await githubContract.connect(owner).addAddress(githubId, walletAddress);
+  console.log(transaction);
 
   return {};
 }

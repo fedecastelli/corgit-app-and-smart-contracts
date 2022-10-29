@@ -1,8 +1,6 @@
 import React from 'react';
 import {Box, Typography} from "@mui/material";
-import {theme} from "../../../GlobalStyles";
 import {useNavigate} from "react-router-dom";
-import {Routes} from "react-router";
 import {RouteKey} from "../../../App.Routes";
 
 /**

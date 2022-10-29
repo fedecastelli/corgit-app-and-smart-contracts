@@ -3,21 +3,13 @@ import {BrowserRouter} from "react-router-dom";
 import {Route, Routes} from "react-router";
 import {useAppDispatch, useAppSelector} from "./hooks/reduxHooks";
 import {githubReducerActions} from "./store/reducers/github";
+import {useSearchCgProject} from "./hooks/useSearchCgProject";
+import {useGetPullRequestDetails} from "./hooks/useGetPullRequestDetails";
+import {routes} from "./App.Routes";
 
 
 function App(): JSX.Element {
 
-  const dispatch = useAppDispatch();
-  const call = () => {
-    dispatch(githubReducerActions.loadPullRequestContributors({
-      repoOwner: "ledgerwatch", repoName: "erigon", pullrequestNumber: 5891}));
-  };
-  return (
-      <div onClick={call}>
-        ciao
-      </div>
-  );
-  /*
   return (
     <BrowserRouter>
       <Routes>
@@ -31,7 +23,6 @@ function App(): JSX.Element {
       </Routes>
     </BrowserRouter>
   );
-   */
 
 }
 

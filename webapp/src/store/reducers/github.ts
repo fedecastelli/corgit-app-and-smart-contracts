@@ -1,20 +1,11 @@
 import {BaseReducer} from "./index";
-import {Prices, Proof, ProofToMint, PullRequest} from "../../utils/ProjectTypes/Project.types";
+import {PullRequest} from "../../utils/ProjectTypes/Project.types";
 import {createSlice} from "@reduxjs/toolkit";
 import {clearError} from "../actions/basicActions";
-import {ErrorsEnum} from "../../utils/ProjectTypes/Errors.enum";
-import {loadPullRequest} from "../actions/githubActions";
+import {setPullRequest} from "../actions/githubActions";
 
 export interface GithubReducer extends BaseReducer {
-  pullRequest: PullRequest,
-  mintedProofs: Proof[],
-  mintedProofsLoading: boolean,
-  proofToBeMinted: ProofToMint[],
-  proofsToBeMintedHasEvaluationPending: boolean,
-  uploadingFileToPublish: boolean,
-  newProofActiveStep: number,
-  mintingTx: string,
-  price: Prices | undefined
+  pullRequest: PullRequest | undefined,
 }
 
 /** -- INITIAL STATE */
@@ -22,14 +13,6 @@ export interface GithubReducer extends BaseReducer {
 const initialState: GithubReducer = {
   dispatchError: undefined,
   pullRequest: undefined,
-  mintedProofsLoading: false,
-  mintedProofs: [],
-  proofToBeMinted: [],
-  proofsToBeMintedHasEvaluationPending: false,
-  uploadingFileToPublish: false,
-  newProofActiveStep: 0,
-  mintingTx: "",
-  price: undefined
 };
 
 /** --- CREATE THE REDUCER */
@@ -38,23 +21,18 @@ export const githubReducerSlice = createSlice({
   name: 'github',
   initialState,
   reducers: {
-    clearError
+    clearError,
+    setPullRequest
   },
   extraReducers:
       (builder) => {
-        /** Github pull request contributors */
-        builder.addCase(loadPullRequest.fulfilled, (state, action) => {
-          state.pullRequest = action.payload;
-        })
-        builder.addCase(loadPullRequest.rejected, (state, action) => {
-          state.dispatchError = { code: ErrorsEnum.PROOF_0005, message: "", action: "github/loadPullRequestContributors"};
-        })
+
       }
   }
 );
 
 export const githubReducerActions = {
-  loadPullRequestContributors: loadPullRequest,
+  setPullRequest: githubReducerSlice.actions.setPullRequest
 }
 
 export default githubReducerSlice.reducer

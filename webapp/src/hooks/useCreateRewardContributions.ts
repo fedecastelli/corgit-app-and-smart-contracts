@@ -28,7 +28,6 @@ export const useCreateRewardContributions = (params: {cgTokenAddress: string}) =
     setStatus({transactionHash: "", error: "", completed: false});
     // call the contract function to create rewards
     contract.connect(params.signer).pay(params.githubIds, params.amountList, params.name)
-    contract.connect(params.signer).pay(params.githubIds, params.amountList, params.name)
       .then(tx => {
         console.log(tx);
         setStatus({completed: false, transactionHash: tx.hash, error: ""});

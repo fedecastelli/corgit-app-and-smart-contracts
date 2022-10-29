@@ -79,6 +79,8 @@ describe("cgFactory", () => {
       expect(paymentAmounts.paid).to.be.false;
       let userPaymentId = await cgToken.userPayments(githubId, 0);
       expect(userPaymentId).to.be.equals(0);
+      let lockedTokensForPayments = await cgToken.lockedTokensForPayments();
+      expect(lockedTokensForPayments).to.be.equals(amountToPay);
     })
 
     it("Should collect payment user02", async () => {

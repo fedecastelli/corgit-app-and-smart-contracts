@@ -1,0 +1,48 @@
+import {ethers} from "hardhat";
+import {CgFactory, GithubAddressRegister} from "../../typechain-types";
+import {deployGithubAddressRegister} from "./SingleContracts/GithubAddressRegister";
+import {deployCgFactory} from "./SingleContracts/cgFactory";
+
+const githubABI = require("./GithubContractABI.json");
+
+export const associateGithubToWallet = async (
+  chainId: number,
+  enableWaiting: boolean = false,
+  githubAddressRegisterContract: string,
+  githubId: number,
+  walletAddress: string
+): Promise<{
+
+}> => {
+
+  // We get the contract to deploy
+  const [owner] = await ethers.getSigners();
+
+  // get the next nouce
+  let next_nonce = await owner.getTransactionCount();
+
+  const githubContract = new ethers.Contract(githubAddressRegisterContract, githubABI, owner);
+
+  const transaction = await githubContract.addAddress(githubId, walletAddress);
+
+  return {};
+}
+
+if (typeof require !== 'undefined' && require.main === module) {
+  let chainId: "5" | "137" | "1337" = "137";
+  associateGithubToWallet(
+    parseInt("5"),
+    false,
+      "0xd5F210aAe5330308ebc2B015Bfb0e70839251811",
+      31770652,
+      "0x349F4A96a44fcd83338b90DC37Fb7F5FeEc8AdE1"
+  )
+    .then(() => process.exit(0))
+    .catch((error) => {
+      console.error(error);
+      process.exit(1);
+    });
+}
+
+
+

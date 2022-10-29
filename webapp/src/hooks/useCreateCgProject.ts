@@ -43,7 +43,8 @@ export const useCreateCgProject = () => {
             console.log(rc);
             const event = rc?.events?.find(event => event.event === 'NewCgTokenCreated');
             console.log("event read", event);
-            // const [_addr, _name, _symbol, _percFundingDistribute] = event?.args as NewCgTokenCreatedEvent;
+            const [_addr, _name, _symbol, _percFundingDistribute] = event?.args;
+            setStatus({transactionHash: "", error: "", tokenAddress: _addr});
           })
     });
   }

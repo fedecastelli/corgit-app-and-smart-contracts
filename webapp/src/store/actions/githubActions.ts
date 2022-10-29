@@ -1,7 +1,13 @@
-import {createAsyncThunk} from "@reduxjs/toolkit";
+import {CaseReducer, createAsyncThunk, PayloadAction} from "@reduxjs/toolkit";
 import {PullRequest, PullRequestContributor, PullRequestState} from "../../utils/ProjectTypes/Project.types";
 import {Octokit} from "@octokit/rest";
 import axios, {AxiosResponse} from "axios";
+import {GithubReducer} from "../reducers/github";
+
+export const setContractAddress: CaseReducer<GithubReducer, PayloadAction<string>> =
+    (state, action) => {
+      state.githubRepoContractAddress = action.payload;
+    }
 
 export const getContractAddressFromGithubRepo = createAsyncThunk<string | undefined, {repoOwner: string, repoName: string}>(
     'github/getContractAddressFromGithubRepo',

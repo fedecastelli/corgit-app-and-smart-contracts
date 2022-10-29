@@ -3,7 +3,7 @@ import {Prices, Proof, ProofToMint, PullRequest} from "../../utils/ProjectTypes/
 import {createSlice} from "@reduxjs/toolkit";
 import {clearError} from "../actions/basicActions";
 import {ErrorsEnum} from "../../utils/ProjectTypes/Errors.enum";
-import {getContractAddressFromGithubRepo, loadPullRequest} from "../actions/githubActions";
+import {getContractAddressFromGithubRepo, loadPullRequest, setContractAddress} from "../actions/githubActions";
 
 export interface GithubReducer extends BaseReducer {
   githubRepoContractAddress: string | undefined,
@@ -40,7 +40,8 @@ export const githubReducerSlice = createSlice({
   name: 'github',
   initialState,
   reducers: {
-    clearError
+    clearError,
+    setContractAddress
   },
   extraReducers:
       (builder) => {
@@ -65,6 +66,7 @@ export const githubReducerSlice = createSlice({
 );
 
 export const githubReducerActions = {
+  setContractAddress: githubReducerSlice.actions.setContractAddress,
   getContractAddressFromGithubRepo: getContractAddressFromGithubRepo,
   loadPullRequestContributors: loadPullRequest
 }

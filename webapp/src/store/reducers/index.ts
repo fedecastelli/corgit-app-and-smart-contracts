@@ -3,17 +3,20 @@ import {UiReducer, uiReducerSlice} from "./ui";
 import {UserAccountReducer, userAccountReducerSlice} from "./userAccount";
 import {ErrorsEnum} from "../../utils/ProjectTypes/Errors.enum";
 import {GithubReducer, githubReducerSlice} from "./github";
+import {CgProjectReducer, cgProjectReducerSlice} from "./cgProject";
 
 interface RootReducer {
   ui: UiReducer,
   userAccount: UserAccountReducer,
-  github: GithubReducer
+  github: GithubReducer,
+  cgProject: CgProjectReducer
 }
 
 const rootReducer = combineReducers<RootReducer>({
   ui: uiReducerSlice.reducer,
   userAccount: userAccountReducerSlice.reducer,
-  github: githubReducerSlice.reducer
+  github: githubReducerSlice.reducer,
+  cgProject: cgProjectReducerSlice.reducer
 });
 
 export default rootReducer;

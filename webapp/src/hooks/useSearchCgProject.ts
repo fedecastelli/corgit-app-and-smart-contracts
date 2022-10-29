@@ -34,7 +34,7 @@ export const useSearchCgProject = (address: string) => {
             if (tokenAddress === undefined) {
               setStatus({loading: false, error: ".corgit.config not found", address: ""});
             } else {
-              setStatus({loading: false, error: "", address: "0x" + tokenAddress});
+              setStatus({loading: false, error: "", address: tokenAddress});
               dispatch(cgProjectReducerActions.setCgProjectInformation({
                 tokenAddress: tokenAddress, githubUrl: address}));
             }

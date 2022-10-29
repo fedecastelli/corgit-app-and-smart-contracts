@@ -123,8 +123,8 @@ export type DeploymentContractsDetails = {
   CG_FACTORY: address,
   GITHUB_ADDRESS_REGISTER: address,
   CG_FACTORY_ABI: any,
-  GITHUB_ADDRESS_REGISTER_ABI: AbiItem,
-  CG_PROJECT_ABI: AbiItem
+  GITHUB_ADDRESS_REGISTER_ABI: any,
+  CG_PROJECT_ABI: any
 };
 
 /**

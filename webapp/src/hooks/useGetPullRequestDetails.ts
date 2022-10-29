@@ -41,7 +41,7 @@ const loadPullRequestInformation = async (
   } as PullRequest;
 }
 
-export const useGetPullRequestDetails = (pullRequestUrl: string) => {
+export const useGetPullRequestDetails = () => {
   const [status, setStatus] = useState<{
     loading: boolean,
     error: string,
@@ -59,8 +59,8 @@ export const useGetPullRequestDetails = (pullRequestUrl: string) => {
         pullRequestNumber: parseInt(pullRequestInformation.filepath)
       }).then(pullRequest => {
         dispatch(githubReducerActions.setPullRequest(pullRequest));
-
       });
+      setStatus({loading: false, error: "", pullRequestUrl: pullRequestUrl});
     } else setStatus({loading: false, error: "Invalid pull request URL", pullRequestUrl: ""});
   }
   return {

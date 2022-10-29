@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {Box, Button, Typography} from "@mui/material";
-import CommonHeader from "../../organisms/Common.Header/Common.Header";
 import CommonPageWrapper from "../../organisms/Common.PageWrapper/Common.PageWrapper";
 import SingleCreateElement from "../../organisms/Common.PageWrapper/SingleCreateElement";
 import {RocketLaunch} from "@mui/icons-material";
@@ -16,6 +15,7 @@ const Create: React.FC<ICreate> = (props) => {
   const [projectName, setProjectName, ] = useState<string>("");
   const [projectSymbol, setProjectSymbol, ] = useState<string>("");
   const [projectPrevContRew, setProjectPrevContRew, ] = useState<string>("");
+
 
   return (
     <CommonPageWrapper>

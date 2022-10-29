@@ -23,6 +23,7 @@ const Home: React.FC<IHome> = (props) => {
   // const { isOpen, open, close } = useConnectModal();
   const { connect } = useConnect({
     connector: new InjectedConnector(),
+    chainId: 5
   })
 
   useEffect(() => {

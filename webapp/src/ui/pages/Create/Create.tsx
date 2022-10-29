@@ -17,7 +17,7 @@ const Create: React.FC<ICreate> = (props) => {
   const [projectName, setProjectName, ] = useState<string>("");
   const [projectSymbol, setProjectSymbol, ] = useState<string>("");
   const [projectPrevContRew, setProjectPrevContRew, ] = useState<string>("");
-  const {data} = useSigner();
+  const {data} = useSigner({chainId: 5});
   const {transactionHash, error, tokenAddress, checkNow} = useCreateCgProject();
   const { address, isConnected } = useAccount();
 

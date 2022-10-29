@@ -5,6 +5,7 @@ import parseGithubUrl from "parse-github-url";
 import axios, {AxiosResponse} from "axios";
 import {cgProjectReducerActions} from "../store/reducers/cgProject";
 import {web3} from "./useWeb3";
+import {ethers} from "ethers";
 
 const getContractAddressFromGithubRepo = async (repoOwner: string, repoName: string): Promise<string | undefined> => {
   const githubRawResponse: AxiosResponse = await axios.get(
@@ -40,7 +41,7 @@ export const useSearchCgProject = () => {
             }
           });
     } else {
-      if (!web3.utils.isAddress(address)) {
+      if (!ethers.utils.isAddress(address)) {
         setStatus({loading: false, error: "Invalid Ethereum address", address: ""});
       } else {
         dispatch(cgProjectReducerActions.setTokenAddress(address));

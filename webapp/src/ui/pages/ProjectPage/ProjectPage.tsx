@@ -29,7 +29,7 @@ const ProjectPage: React.FC<IProjectPage> = (props) => {
     checkNow: loadProjectData } = useLoadCgProject(tokenAddress);
   let { loading: loadingCgProjectContributions,
     error: errorLoadCjProjectContributions,
-    projectUserContributions, checkNow: checkProjectContributions } = useLoadProjectUserContributions(tokenAddress);
+    projectUserContributions, checkNow:   checkProjectContributions } = useLoadProjectUserContributions(tokenAddress);
   const { data: signer, error: errorSigner, isLoading: isLoadingSigner } = useSigner();
 
   const provider = useProvider();
@@ -39,7 +39,7 @@ const ProjectPage: React.FC<IProjectPage> = (props) => {
   const contributions = useAppSelector(state => state.contributions.userContributions);
 
   useEffect(() => {
-    if (tokenAddress && isConnected && !isLoadingSigner
+    if (tokenAddress && isConnected && !isLoadingSigner && signer
            && provider.network.chainId === 5) {
       loadProjectData(signer, provider, address);
       checkProjectContributions({
@@ -47,7 +47,7 @@ const ProjectPage: React.FC<IProjectPage> = (props) => {
         address: address
       });
     }
-  }, [tokenAddress, isConnected, isLoadingSigner, provider]);
+  }, [tokenAddress, isConnected, isLoadingSigner, signer, provider]);
 
   useEffect(() => {
     setShowLoader(loadingCgProject || loadingCgProjectContributions);

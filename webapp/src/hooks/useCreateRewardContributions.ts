@@ -28,16 +28,18 @@ export const useCreateRewardContributions = (params: {cgTokenAddress: string}) =
     setStatus({transactionHash: "", error: "", completed: false});
     // call the contract function to create rewards
     contract.connect(params.signer).pay(params.githubIds, params.amountList, params.name)
-        .on('transactionHash', (hash: string) => {
-          setStatus({completed: false, transactionHash: hash, error: ""});
-        })
-        .on('receipt', (receipt) => {
-          setStatus({completed: true, transactionHash: "", error: ""});
-        })
-        .on('error', (e: any) => {
-          console.error(e);
-          setStatus({completed: true, error: "Transaction error", transactionHash: ""});
-        })
+    contract.connect(params.signer).pay(params.githubIds, params.amountList, params.name)
+      .then(tx => {
+        console.log(tx);
+        setStatus({completed: false, transactionHash: tx.hash, error: ""});
+        return tx.wait();
+      })
+      .then(rc => {
+        setStatus({completed: true, transactionHash: "", error: ""});
+      })
+      .catch(error => {
+        setStatus({completed: true, error: "Transaction error", transactionHash: ""});
+      });
   };
   return {
     ...status, checkNow

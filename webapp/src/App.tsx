@@ -17,6 +17,7 @@ const { chains, provider } = configureChains(defaultChains, [publicProvider()])
 // })
 
 const client = createClient({
+  autoConnect: true,
   connectors: [
     new InjectedConnector({ chains }),
     new WalletConnectConnector({

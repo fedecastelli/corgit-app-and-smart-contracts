@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
-import {Box, Button, Typography} from "@mui/material";
+import React, {useEffect, useState} from 'react';
+import {Box, Button, CircularProgress, Typography} from "@mui/material";
 import CommonPageWrapper from "../../organisms/Common.PageWrapper/Common.PageWrapper";
 import SingleCreateElement from "../../organisms/Common.PageWrapper/SingleCreateElement";
 import {RocketLaunch} from "@mui/icons-material";
 import {useCreateCgProject} from "../../../hooks/useCreateCgProject";
 import {useAccount, useSigner} from "wagmi";
+import {useNavigate} from "react-router-dom";
 
 /**
  *
@@ -20,7 +21,12 @@ const Create: React.FC<ICreate> = (props) => {
   const {data} = useSigner({chainId: 5});
   const {transactionHash, error, tokenAddress, checkNow} = useCreateCgProject();
   const { address, isConnected } = useAccount();
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    if (tokenAddress)
+      navigate(`/project/${tokenAddress}`);
+  }, [tokenAddress]);
 
   return (
     <CommonPageWrapper>
@@ -45,19 +51,26 @@ const Create: React.FC<ICreate> = (props) => {
                              isNumber={true}
                              onChange={(e) => setProjectPrevContRew(e.target.value)}/>
 
-        <Button variant={"contained"}
-                color="secondary"
-                startIcon={<RocketLaunch />}
-                onClick={() => {checkNow({
-                  tokenName: projectName,
-                  fromAddress: address,
-                  prevContrRewards: parseInt(projectPrevContRew),
-                  tokenSymbol: projectSymbol,
-                  signer: data
-                })}}
-                sx={{color: "white", textTransform: "none", mt: 4}}>
-          Create your cgToken
-        </Button>
+        {
+          transactionHash ?
+            <CircularProgress/>
+            :
+            <Button variant={"contained"}
+                    color="secondary"
+                    startIcon={<RocketLaunch />}
+                    onClick={() => {checkNow({
+                      tokenName: projectName,
+                      fromAddress: address,
+                      prevContrRewards: parseInt(projectPrevContRew),
+                      tokenSymbol: projectSymbol,
+                      signer: data
+                    })}}
+                    sx={{color: "white", textTransform: "none", mt: 4}}>
+              Create your cgToken
+            </Button>
+        }
+
+
 
       </Box>
     </CommonPageWrapper>

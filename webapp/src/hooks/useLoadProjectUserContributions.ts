@@ -1,42 +1,42 @@
-import Web3 from "web3";
-import {AbiItem} from "web3-utils";
 import {useState} from "react";
 import {useAppDispatch} from "./reduxHooks";
-import {CreateCgProjectInterface} from "./useCreateCgProject";
-
-interface AddressToGithubIdInterface {
-  web3: Web3,
-  githubAddressRegisterAbi: AbiItem,
-  githubAddressRegisterAddress: string,
-  address: string
-}
+import {Signer} from "ethers";
+import {useContract} from "@web3modal/react";
+import {CONTRACTS_DETAILS} from "../utils/constants";
 
 export interface LoadProjectUserContributionsInterface {
-  web3: Web3,
-  githubAddressRegisterAbi: AbiItem,
-  githubAddressRegisterAddress: string,
-  address: string
+  signer: Signer,
+  address: string,
+  tokenAddress: string
 }
 
 export interface ProjectUserContributionInterface {
 
 }
 
-const addressToGithubId = async (params: AddressToGithubIdInterface): Promise<number | undefined> => {
-  let cgTokenContract = new params.web3.eth.Contract(
-      params.githubAddressRegisterAbi, params.githubAddressRegisterAddress);
-  return await cgTokenContract.methods.addressToGithubID[params.address];
-}
-
-export const useLoadProjectUserContributions = (params: LoadProjectUserContributionsInterface) => {
+export const useLoadProjectUserContributions = (cgTokenAddress: string) => {
   const [status, setStatus] = useState<{
     loading: boolean,
     error: string,
     projectUserContributions: ProjectUserContributionInterface[]
   }>({loading: false, error: "", projectUserContributions: [] as ProjectUserContributionInterface[]});
   const dispatch = useAppDispatch();
-  const checkNow = (params: CreateCgProjectInterface) => {
+  const { contract, isReady } = useContract({
+    address: CONTRACTS_DETAILS[1337].GITHUB_ADDRESS_REGISTER,
+    abi: CONTRACTS_DETAILS[1337].GITHUB_ADDRESS_REGISTER_ABI
+  });
+  const cgTokenContractInfo = useContract({
+    address: cgTokenAddress,
+    abi: CONTRACTS_DETAILS[1337].CG_PROJECT_ABI
+  });
+  const cgTokenContract = cgTokenContractInfo.contract;
+  const checkNow = (params: LoadProjectUserContributionsInterface) => {
 
+    contract.connect(params.signer).addressToGithubID[params.address]
+        .then(githubId => {
+          console.log(githubId);
+          return githubId;
+        })
   }
   return {
     ...status, checkNow

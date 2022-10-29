@@ -1,17 +1,6 @@
-import {SUPPORTED_CHAIN_IDs} from "../constants";
 import {Chain} from "../ProjectTypes/Project.enum";
 import {BigNumber} from "@ethersproject/bignumber";
 
-/**+
- * Checks if the given chain id is among those supported by our protocol. 0 is considered valid as it means
- * no wallet are yet connected
- *
- * @param {number} chainId
- * @return {boolean} true if it's supported, false otherwise
- */
-export const isSupportedChainId = (chainId: number): boolean => {
-  return SUPPORTED_CHAIN_IDs.includes(chainId);
-}
 
 /**
  * Transforms a full tokenId of an NFT, into it's ID number, and the chain where it is on.

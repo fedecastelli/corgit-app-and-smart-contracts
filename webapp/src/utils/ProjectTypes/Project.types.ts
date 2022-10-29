@@ -8,12 +8,12 @@ export type GithubCommit = {
   sha: string,
   url: string,
   message: string
-}
+};
 
 export enum PullRequestState {
   CLOSED = "closed",
   OPEN = "open"
-}
+};
 
 export type PullRequest = {
   id: number,
@@ -21,7 +21,7 @@ export type PullRequest = {
   state: PullRequestState,
   closedAt: number,
   contributors: PullRequestContributor[]
-}
+};
 
 export type PullRequestContributor = {
   id: number,
@@ -29,7 +29,7 @@ export type PullRequestContributor = {
   username: string,
   profileUrl: string,
   commits: GithubCommit[]
-}
+};
 
 /**
  * Object of a proof already minted
@@ -59,7 +59,7 @@ export type Proof = {
   fileUrl?: string,
   MIMEType?: FileMIMEType,
   verificationFailed: boolean
-}
+};
 
 /**
  * Object of a proof the user is creating and will be minted
@@ -80,7 +80,7 @@ export type ProofToMint = {
   hash: string,
   toBeVerified: boolean,
   uploadPerc: number
-}
+};
 
 /**
  * Params for the redux action to generate the params (aka, make the mint transaction)
@@ -103,7 +103,7 @@ export type GenerateProofActionParams = {
   nftAbi: AbiItem,
   nftAddress: address,
   price: Prices
-}
+};
 
 /**
  * Represents the prices of the service in wei
@@ -114,7 +114,7 @@ export type GenerateProofActionParams = {
 export type Prices = {
   mint: number,
   verification: number
-}
+};
 
 /**
  * Represent the core details for a given deployment, and all its contracts we have to interact
@@ -122,10 +122,10 @@ export type Prices = {
 export type DeploymentContractsDetails = {
   CG_FACTORY: address,
   GITHUB_ADDRESS_REGISTER: address,
-  CG_FACTORY_ABI: AbiItem,
+  CG_FACTORY_ABI: any,
   GITHUB_ADDRESS_REGISTER_ABI: AbiItem,
   CG_PROJECT_ABI: AbiItem
-}
+};
 
 /**
  * Core details of each chain we're on
@@ -140,4 +140,4 @@ export type ChainDetails = {
   EXPLORER_URL: string,
   OPENSEA_CHAIN_NAME: string,
   IS_TESTNET: boolean
-}
+};

@@ -71,8 +71,8 @@ export const theme = createTheme({
       dark: '#b56200'
     },
     text: {
-      primary: '#343434',
-      secondary: '#7B7B7B',
+      primary: '#4A4A4A',
+      secondary: '#737373',
       disabled: '#B8B8B8',
     },
     error: { main: '#F44336' },

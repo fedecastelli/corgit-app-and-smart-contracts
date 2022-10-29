@@ -6,7 +6,7 @@ import {createTheme, Theme} from '@mui/material/styles';
 export const theme = createTheme({
   typography: {
     fontFamily: [
-      'Lekton',
+      'Roboto',
       '"Helvetica Neue"',
       'Arial',
       'sans-serif',
@@ -15,60 +15,60 @@ export const theme = createTheme({
       '"Segoe UI Symbol"',
     ].join(','),
     h1: {
-      fontSize: 40,
-      fontWeight: 500,
-      fontFamily: "Lekton"
+      fontSize: 30,
+      fontWeight: 600,
+      fontFamily: "Roboto"
     },
     h2: {
-      fontSize: 36,
-      fontWeight: 400,
-      fontFamily: "Lekton"
+      fontSize: 24,
+      fontWeight: 600,
+      fontFamily: "Roboto"
     },
     h3: {
-      fontSize: 24,
-      fontFamily: "Lekton",
-      fontWeight: "bold"
+      fontSize: 22,
+      fontFamily: "Roboto",
+      fontWeight: 600
     },
     h4: {
-      fontSize: 20,
-      fontFamily: "Lekton",
-      fontWeight: "bold"
+      fontSize: 18,
+      fontFamily: "Roboto",
+      fontWeight: 600
     },
     h5: {
       fontSize: 16,
-      fontFamily: "Lekton"
+      fontFamily: "Roboto"
     },
     h6: {
       fontSize: 14,
-      fontFamily: "Lekton"
+      fontFamily: "Roboto"
     },
     body1: {
-      fontSize: 16,
-      fontFamily: "Lekton"
+      fontSize: 18,
+      fontFamily: "Roboto"
     },
     body2: {
-      fontSize: 12,
-      fontFamily: "Lekton"
+      fontSize: 14,
+      fontFamily: "Roboto"
     },
     subtitle1: {
       fontSize: 16,
-      fontFamily: "Lekton"
+      fontFamily: "Roboto"
     },
     button: {
       fontWeight: 600,
-      fontFamily: "Lekton"
+      fontFamily: "Roboto"
     }
   },
   palette: {
     primary: {
-      main: '#DE545B',
-      light: '#FF8688',
-      dark: '#A71E32'
+      main: '#158fd6',
+      light: '#63bfff',
+      dark: '#0062a4'
     },
     secondary: {
-      main: '#EAB463',
-      light: '#FFE692',
-      dark: '#B58435'
+      main: '#ed9020',
+      light: '#ffc154',
+      dark: '#b56200'
     },
     text: {
       primary: '#343434',
@@ -85,16 +85,9 @@ export const theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: `
         a {
-          color: #DE545B
+          color: #ed9020
         }
       `
-    },
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          paddingBottom: 2  // Lekton font makes it not correctly aligned
-        }
-      }
     }
   }
 });

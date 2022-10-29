@@ -4,6 +4,7 @@ import {Route, Routes} from "react-router";
 import {useAppDispatch, useAppSelector} from "./hooks/reduxHooks";
 import {githubReducerActions} from "./store/reducers/github";
 import {useSearchCgProject} from "./hooks/useSearchCgProject";
+import {routes} from "./App.Routes";
 
 
 function App(): JSX.Element {
@@ -16,14 +17,7 @@ function App(): JSX.Element {
     // dispatch(githubReducerActions.getContractAddressFromGithubRepo({
     //   repoOwner: "fedecastelli", repoName: "corgit-test-hello-world"}));
   };
-  return (
-      <div onClick={() => {checkNow("git@github.com:fedecastelli/corgit-test-hello-world.git")}}>
-        ciao {address}<br></br>
-        {addressStore}<br></br>
-        {githubUrl}
-      </div>
-  );
-  /*
+
   return (
     <BrowserRouter>
       <Routes>
@@ -37,7 +31,6 @@ function App(): JSX.Element {
       </Routes>
     </BrowserRouter>
   );
-   */
 
 }
 

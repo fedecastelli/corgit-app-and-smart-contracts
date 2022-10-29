@@ -4,6 +4,8 @@ import isGithubUrl from "is-github-url";
 import parseGithubUrl from "parse-github-url";
 import axios, {AxiosResponse} from "axios";
 import {cgProjectReducerActions} from "../store/reducers/cgProject";
+import Web3 from "web3";
+import {AbiItem} from "web3-utils";
 
 const getContractAddressFromGithubRepo = async (repoOwner: string, repoName: string): Promise<string | undefined> => {
   const githubRawResponse: AxiosResponse = await axios.get(
@@ -12,6 +14,23 @@ const getContractAddressFromGithubRepo = async (repoOwner: string, repoName: str
     const corgitConfig: {cgTokenAddress: string} = githubRawResponse.data;
     return corgitConfig.cgTokenAddress;
   } else return undefined;
+}
+
+const getCgTokenInformation = async (params: {web3: Web3, cgTokenAbi: AbiItem, cgTokenAddress: string}): Promise<{
+  tokenSymbol: string,
+  distributionReward: number
+}> => {
+
+  let contract = new params.web3.eth.Contract(params.cgTokenAbi, params.cgTokenAddress);
+  let promises = [];
+  promises.push(contract.methods.symbol().call);
+  promises.push(contract.methods.percFundingDistributed().call);
+
+  let responses = await Promise.all(promises);
+  const tokenSymbol = responses[0];
+  const distributionReward = responses[1];
+
+  return {tokenSymbol: tokenSymbol, distributionReward: distributionReward};
 }
 
 export const useSearchCgProject = (address: string) => {
@@ -34,10 +53,11 @@ export const useSearchCgProject = (address: string) => {
             if (tokenAddress === undefined) {
               setStatus({loading: false, error: ".corgit.config not found", address: ""});
             } else {
+              // getCgTokenInformation()
               // TODO: token address got, load all the information needed from the blockchain
-              setStatus({loading: false, error: "", address: tokenAddress});
               dispatch(cgProjectReducerActions.setCgProjectInformation({
                 tokenAddress: tokenAddress, githubUrl: address}));
+              setStatus({loading: false, error: "", address: tokenAddress});
             }
           });
     } else {

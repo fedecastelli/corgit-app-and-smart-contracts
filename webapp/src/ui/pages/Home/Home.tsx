@@ -1,10 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {Box, Button, CircularProgress, TextField} from "@mui/material";
 import {useAccount, useConnectModal, useProvider} from "@web3modal/react";
+<<<<<<< HEAD
 import {theme} from "../../../GlobalStyles";
 import {RocketLaunch} from "@mui/icons-material";
 import {useSearchCgProject} from "../../../hooks/useSearchCgProject";
 import {useDebounce} from "use-debounce";
+=======
+import {useCreateCgProject} from "../../../hooks/useCreateCgProject";
+import {CONTRACTS_DETAILS} from "../../../utils/constants";
+>>>>>>> feature/create-hooks
 
 /**
  *
@@ -15,8 +20,22 @@ import {useDebounce} from "use-debounce";
 const Home: React.FC<IHome> = (props) => {
   const { loading, address, error, checkNow } = useSearchCgProject();
 
+<<<<<<< HEAD
   const [tokenSearchValue, setTokenSearchValue] = useState<string>("");
   const [searchCgProjectValue] = useDebounce(tokenSearchValue, 500);
+=======
+  const {tokenAddress, transactionHash, error, checkNow} = useCreateCgProject({
+    tokenName: "First Test",
+    tokenSymbol: "TEST",
+    prevContrRewards: 50,
+    web3: provider,
+    cgFactoryAddress: CONTRACTS_DETAILS[1337].CG_FACTORY,
+    cgFactoryAbi: CONTRACTS_DETAILS[1337].CG_FACTORY_ABI,
+    fromAddress: account.address
+  });
+
+  const test = () => {
+>>>>>>> feature/create-hooks
 
   useEffect(() => {
     if (searchCgProjectValue)
@@ -57,11 +76,25 @@ const Home: React.FC<IHome> = (props) => {
               sx={{color: "white", textTransform: "none", mt: 4}}>
         Create a New cgToken
       </Button>
+<<<<<<< HEAD
 
       <Box position={"absolute"} zIndex={-1} bottom={0} left={0}>
         <img src={"/img/CorGitHomeImage.png"}/>
       </Box>
 
+=======
+      <Button onClick={() => {checkNow({
+        tokenName: "First Test",
+        tokenSymbol: "TEST",
+        prevContrRewards: 50,
+        web3: provider,
+        cgFactoryAddress: CONTRACTS_DETAILS[1337].CG_FACTORY,
+        cgFactoryAbi: CONTRACTS_DETAILS[1337].CG_FACTORY_ABI,
+        fromAddress: account.address
+      })}} variant="contained">
+        ciao
+      </Button>
+>>>>>>> feature/create-hooks
     </Box>
   );
 };

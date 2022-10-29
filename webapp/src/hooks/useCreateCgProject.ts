@@ -24,8 +24,8 @@ export const useCreateCgProject = () => {
   const dispatch = useAppDispatch();
 
   const { contract, isReady } = useContract({
-    address: CONTRACTS_DETAILS[1337].CG_FACTORY,
-    abi: CONTRACTS_DETAILS[1337].CG_FACTORY_ABI
+    address: CONTRACTS_DETAILS[5].CG_FACTORY,
+    abi: CONTRACTS_DETAILS[5].CG_FACTORY_ABI
   });
 
   const checkNow = (params: CreateCgProjectInterface) => {
@@ -40,6 +40,8 @@ export const useCreateCgProject = () => {
       console.log("result", result);
       return result.wait()
           .then(rc => {
+            console.log('RC');
+            console.log(rc);
             const event = rc?.events?.find(event => event.event === 'NewCgTokenCreated');
             console.log("event read", event);
             // const [_addr, _name, _symbol, _percFundingDistribute] = event?.args as NewCgTokenCreatedEvent;

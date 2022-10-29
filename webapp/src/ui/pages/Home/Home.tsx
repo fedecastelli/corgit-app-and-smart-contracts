@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Button, CircularProgress, TextField} from "@mui/material";
-import {useAccount, useConnectModal, useProvider} from "@web3modal/react";
+import {Box, Button, CircularProgress, Dialog, DialogContent, TextField} from "@mui/material";
+import {useAccount, useConnectModal} from "@web3modal/react";
 import {theme} from "../../../GlobalStyles";
 import {RocketLaunch} from "@mui/icons-material";
 import {useSearchCgProject} from "../../../hooks/useSearchCgProject";
 import {useDebounce} from "use-debounce";
 import {RouteKey} from "../../../App.Routes";
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 /**
  *
@@ -17,18 +17,22 @@ import { useNavigate } from 'react-router-dom';
 const Home: React.FC<IHome> = (props) => {
   const { loading, address, error, checkNow } = useSearchCgProject();
   const [tokenSearchValue, setTokenSearchValue] = useState<string>("");
+  const [openConnectModal, setOpenConnectModal] = useState<boolean>(false);
   const [searchCgProjectValue] = useDebounce(tokenSearchValue, 500);
   const navigate = useNavigate();
+  const { isOpen, open, close } = useConnectModal();
+  const { account, isReady } = useAccount();
+
+  useEffect(() => {
+    if (isReady && !account.address) {
+      setOpenConnectModal(true);
+    }
+  }, [isReady, account.address]);
 
   useEffect(() => {
     if (searchCgProjectValue)
       checkNow(searchCgProjectValue);
   }, [searchCgProjectValue]);
-
-  useEffect(() => {
-    if (address)
-      alert(address);
-  }, [address])
 
   const onInputChange = (e) => {
     setTokenSearchValue(e.target.value);
@@ -61,6 +65,18 @@ const Home: React.FC<IHome> = (props) => {
       >
         Create a New cgToken
       </Button>
+
+      <Dialog open={openConnectModal}>
+        <DialogContent>
+          <Button variant={"contained"}
+                  color="secondary"
+                  sx={{color: "white", textTransform: "none", mt: 4}}
+                  onClick={() => {open()}}
+          >
+            Connect Metamask
+          </Button>
+        </DialogContent>
+      </Dialog>
 
       <Box position={"absolute"} zIndex={-1} bottom={0} left={0}>
         <img src={"/img/CorGitHomeImage.png"}/>

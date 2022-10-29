@@ -26,6 +26,8 @@ const Home: React.FC<IHome> = (props) => {
   useEffect(() => {
     if (isReady && !account.address) {
       setOpenConnectModal(true);
+    } else if (isReady && !account.address) {
+      setOpenConnectModal(false);
     }
   }, [isReady, account.address]);
 

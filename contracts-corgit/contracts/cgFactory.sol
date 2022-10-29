@@ -1,4 +1,4 @@
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.17;
 
 import "./cgToken.sol";
 
@@ -12,8 +12,10 @@ contract cgFactory {
 
     // contracts
     /// @dev list of all the CgTokens created
-    CgToken[] cgTokenList;
-    GithubAddressRegister githubAddressRegister;
+    CgToken[] public cgTokenList;
+    GithubAddressRegister public githubAddressRegister;
+
+    event NewCgTokenCreated(address _addr, string _name, string _symbol, uint16 _percFundingDistribute);
 
     constructor(address _githubAddressRegister) {
         githubAddressRegister = GithubAddressRegister(_githubAddressRegister);
@@ -27,7 +29,7 @@ contract cgFactory {
 
         cgToken cgt = new cgToken(
             _name,
-            _symbol,
+            string.concat("cg", _symbol),
             100000 * (10 ** 18),
             _percFundingDistribute,
             address(githubAddressRegister),
@@ -38,6 +40,8 @@ contract cgFactory {
             tokenContract: cgt,
             createdAt: block.timestamp
         }));
+
+        emit NewCgTokenCreated(address(cgt), _name, _symbol, _percFundingDistribute);
 
         return address(cgt);
     }

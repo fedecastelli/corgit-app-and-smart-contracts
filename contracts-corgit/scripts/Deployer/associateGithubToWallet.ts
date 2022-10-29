@@ -21,9 +21,10 @@ export const associateGithubToWallet = async (
   // get the next nouce
   let next_nonce = await owner.getTransactionCount();
 
-  const githubContract = new ethers.Contract(githubAddressRegisterContract, githubABI, owner);
+  const contractFactory = await ethers.getContractFactory("GithubAddressRegister");
+  const githubContract = await contractFactory.attach(githubAddressRegisterContract);
 
-  const transaction = await githubContract.addAddress(githubId, walletAddress);
+  const transaction = await githubContract.connect(owner).addAddress(githubId, walletAddress);
 
   return {};
 }

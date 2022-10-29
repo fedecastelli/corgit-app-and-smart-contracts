@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import CommonPageWrapper from "../../organisms/Common.PageWrapper/Common.PageWrapper";
 import {Box, Button, Grid, Typography} from "@mui/material";
 import {RocketLaunch} from "@mui/icons-material";
@@ -8,6 +8,10 @@ import {useNavigate} from "react-router-dom";
 import {RouteKey} from "../../../App.Routes";
 import {useParams} from "react-router";
 import ProjectAddCollateralDialog from "../../organisms/Project.AddCollateralDialog/Project.AddCollateralDialog";
+import CommonBackdrop from "../../atmos/Common.Backdrop/Common.Backdrop";
+import {useLoadCgProject} from "../../../hooks/useLoadCgProject";
+import {useAccount, useNetwork, useProvider, useSigner} from "@web3modal/react";
+import {useLoadProjectUserContributions} from "../../../hooks/useLoadProjectUserContributions";
 
 /**
  *
@@ -18,9 +22,33 @@ import ProjectAddCollateralDialog from "../../organisms/Project.AddCollateralDia
 const ProjectPage: React.FC<IProjectPage> = (props) => {
 
   const [showAddCollateral, setShowAddCollateral] = useState<boolean>(false);
+  const [showLoader, setShowLoader] = useState<boolean>(false);
   const navigate = useNavigate();
   let { tokenAddress } = useParams();
+  let { loading: loadingCgProject,
+    error: errorLoadCjProject,
+    checkNow: loadProjectData } = useLoadCgProject(tokenAddress);
+  let { loading: loadingCgProjectContributions,
+    error: errorLoadCjProjectContributions,
+    projectUserContributions, checkNow: checkProjectContributions } = useLoadProjectUserContributions(tokenAddress);
+  const { data: signer, error: errorSigner, isLoading: isLoadingSigner } = useSigner();
+  const { provider, isReady: isReadyProvider } = useProvider({chainId: 5});
+  const { account, isReady: isReadyAccount } = useAccount();
+  const { network, isReady: isReadyNetwork } = useNetwork();
 
+  useEffect(() => {
+    if (tokenAddress && isReadyAccount && isReadyProvider && !isLoadingSigner && isReadyNetwork) {
+      loadProjectData(signer, provider, account.address);
+      checkProjectContributions({
+        signer: signer,
+        address: account.address
+      });
+    }
+  }, [tokenAddress, isReadyAccount, isReadyProvider, isLoadingSigner, isReadyNetwork]);
+
+  useEffect(() => {
+    setShowLoader(loadingCgProject || loadingCgProjectContributions);
+  }, [loadingCgProject, loadingCgProjectContributions]);
 
   return (
     <CommonPageWrapper>
@@ -80,6 +108,10 @@ const ProjectPage: React.FC<IProjectPage> = (props) => {
 
       {/* Dialog to add collateral */}
       <ProjectAddCollateralDialog show={showAddCollateral} close={() => {setShowAddCollateral(false)}}/>
+
+      {/* Show a Backdrop loader */}
+      <CommonBackdrop show={showLoader} toggleClose={() => setShowLoader(false)}/>
+
     </CommonPageWrapper>
   );
 };

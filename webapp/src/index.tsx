@@ -15,7 +15,7 @@ const web3ModalConfig: ConfigOptions = {
   theme: 'dark',
   accentColor: 'default',
   ethereum: {
-    appName: 'web3Modal'
+    appName: 'CorGit'
   }
 }
 

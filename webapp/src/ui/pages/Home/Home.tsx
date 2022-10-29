@@ -34,6 +34,12 @@ const Home: React.FC<IHome> = (props) => {
       checkNow(searchCgProjectValue);
   }, [searchCgProjectValue]);
 
+  // redirect on address found
+  useEffect(() => {
+    if (address)
+      navigate(`/project/${address}`);
+  }, [address]);
+
   const onInputChange = (e) => {
     setTokenSearchValue(e.target.value);
   }

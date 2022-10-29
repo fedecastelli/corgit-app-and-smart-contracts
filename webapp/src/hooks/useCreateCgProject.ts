@@ -3,35 +3,40 @@ import {useState} from "react";
 import {useAppDispatch} from "./reduxHooks";
 import {AbiItem} from "web3-utils";
 import {Provider} from "@web3modal/ethereum";
-import {ContractInterface, ethers} from "ethers";
-import {useContract, useSendTransaction} from "@web3modal/react";
+import {ContractInterface, ethers, Signer} from "ethers";
+import {useContract, useProvider, useSendTransaction, useSigner} from "@web3modal/react";
+import {CONTRACTS_DETAILS} from "../utils/constants";
 
 export interface CreateCgProjectInterface {
-  web3: ethers.providers.Provider,
   fromAddress: string,
-  cgFactoryAbi: AbiItem,
-  cgFactoryAddress: string,
   tokenName: string,
   tokenSymbol: string,
-  prevContrRewards: number
+  prevContrRewards: number,
+  signer: Signer
 }
 
-export const useCreateCgProject = (params: CreateCgProjectInterface) => {
+export const useCreateCgProject = () => {
   const [status, setStatus] = useState<{
     transactionHash: string,
     error: string,
     tokenAddress: string
   }>({transactionHash: "", error: "", tokenAddress: ""});
   const dispatch = useAppDispatch();
+
   const { contract, isReady } = useContract({
-    address: params.cgFactoryAddress,
-    abi: [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"inputs":[{"internalType":"uint256","name":"_githubID","type":"uint256"},{"internalType":"address","name":"_wallet","type":"address"}],"name":"addAddress","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"addressToGithubID","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"githubIDToAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_githubID","type":"uint256"},{"internalType":"address","name":"_addressToRemove","type":"address"}],"name":"removeAddress","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"}]
+    address: CONTRACTS_DETAILS[1337].CG_FACTORY,
+    abi: CONTRACTS_DETAILS[1337].CG_FACTORY_ABI
   });
+
   const checkNow = (params: CreateCgProjectInterface) => {
     setStatus({transactionHash: "", error: "", tokenAddress: ""});
     // TODO: understand if this part of code is working
 
-    contract.methods.generate(params.tokenName, params.tokenSymbol, params.prevContrRewards).then(result => {
+    contract.connect(params.signer).generate(
+        params.tokenName,
+        params.tokenSymbol,
+        params.prevContrRewards
+      ).then(result => {
       console.log(result);
       return result.wait()
           .then(rc => {

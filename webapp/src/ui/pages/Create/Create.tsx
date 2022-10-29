@@ -3,6 +3,8 @@ import {Box, Button, Typography} from "@mui/material";
 import CommonPageWrapper from "../../organisms/Common.PageWrapper/Common.PageWrapper";
 import SingleCreateElement from "../../organisms/Common.PageWrapper/SingleCreateElement";
 import {RocketLaunch} from "@mui/icons-material";
+import {useCreateCgProject} from "../../../hooks/useCreateCgProject";
+import {useAccount, useSigner} from "@web3modal/react";
 
 /**
  *
@@ -15,6 +17,9 @@ const Create: React.FC<ICreate> = (props) => {
   const [projectName, setProjectName, ] = useState<string>("");
   const [projectSymbol, setProjectSymbol, ] = useState<string>("");
   const [projectPrevContRew, setProjectPrevContRew, ] = useState<string>("");
+  const {data} = useSigner();
+  const {transactionHash, error, tokenAddress, checkNow} = useCreateCgProject();
+  const {account, isReady} = useAccount();
 
 
   return (
@@ -43,6 +48,13 @@ const Create: React.FC<ICreate> = (props) => {
         <Button variant={"contained"}
                 color="secondary"
                 startIcon={<RocketLaunch />}
+                onClick={() => {checkNow({
+                  tokenName: projectName,
+                  fromAddress: account.address,
+                  prevContrRewards: parseInt(projectPrevContRew),
+                  tokenSymbol: projectSymbol,
+                  signer: data
+                })}}
                 sx={{color: "white", textTransform: "none", mt: 4}}>
           Create your cgToken
         </Button>

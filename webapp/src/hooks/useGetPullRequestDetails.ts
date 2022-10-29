@@ -35,7 +35,7 @@ const loadPullRequestInformation = async (
   return {
     id: pullRequestInformation.data.id,
     title: pullRequestInformation.data.title,
-    closedAt: 0,
+    closedAt: Math.round(new Date(pullRequestInformation.data.closed_at).getTime() / 1000),
     state: pullRequestInformation.data.state as PullRequestState,
     contributors: contributors
   } as PullRequest;

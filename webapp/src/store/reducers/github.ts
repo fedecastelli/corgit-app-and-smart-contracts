@@ -5,7 +5,7 @@ import {clearError} from "../actions/basicActions";
 import {setPullRequest} from "../actions/githubActions";
 
 export interface GithubReducer extends BaseReducer {
-  pullRequest: PullRequest,
+  pullRequest: PullRequest | undefined,
 }
 
 /** -- INITIAL STATE */

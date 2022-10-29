@@ -14,7 +14,7 @@ const getContractAddressFromGithubRepo = async (repoOwner: string, repoName: str
   } else return undefined;
 }
 
-export const useSearchCgProject = (address: string) => {
+export const useSearchCgProject = () => {
   const [status, setStatus] = useState<{
     loading: boolean,
     error: string,

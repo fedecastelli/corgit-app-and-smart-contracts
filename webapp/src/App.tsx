@@ -9,15 +9,6 @@ import {routes} from "./App.Routes";
 
 function App(): JSX.Element {
 
-  const dispatch = useAppDispatch();
-  const addressStore = useAppSelector(state => state.cgProject.tokenAddress);
-  const githubUrl = useAppSelector(state => state.cgProject.githubUrl);
-  const {loading, address, error, checkNow} = useSearchCgProject("git@github.com:fedecastelli/corgit-test-hello-world.git");
-  const call = () => {
-    // dispatch(githubReducerActions.getContractAddressFromGithubRepo({
-    //   repoOwner: "fedecastelli", repoName: "corgit-test-hello-world"}));
-  };
-
   return (
     <BrowserRouter>
       <Routes>

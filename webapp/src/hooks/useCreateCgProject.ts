@@ -37,11 +37,11 @@ export const useCreateCgProject = () => {
         params.tokenSymbol,
         params.prevContrRewards
       ).then(result => {
-      console.log(result);
+      console.log("result", result);
       return result.wait()
           .then(rc => {
             const event = rc?.events?.find(event => event.event === 'NewCgTokenCreated');
-            console.log(event);
+            console.log("event read", event);
             // const [_addr, _name, _symbol, _percFundingDistribute] = event?.args as NewCgTokenCreatedEvent;
           })
     });

@@ -1,9 +1,10 @@
 import React from "react";
 import Home from "./ui/pages/Home/Home";
+import Create from "./ui/pages/Create/Create";
 
 export enum RouteKey {
   Home = "/",
-  dApp = "/dApp"
+  Create = "/create"
 }
 // list of all the routes of the App
 export const routes = [ {
@@ -11,4 +12,9 @@ export const routes = [ {
   protected: false,
   path: RouteKey.Home,
   component: <Home/>,
+}, {
+  key: RouteKey.Create,
+  protected: false,
+  path: RouteKey.Create,
+  component: <Create />,
 }]

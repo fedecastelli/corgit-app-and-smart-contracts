@@ -34,6 +34,7 @@ export const useSearchCgProject = (address: string) => {
             if (tokenAddress === undefined) {
               setStatus({loading: false, error: ".corgit.config not found", address: ""});
             } else {
+              // TODO: token address got, load all the information needed from the blockchain
               setStatus({loading: false, error: "", address: tokenAddress});
               dispatch(cgProjectReducerActions.setCgProjectInformation({
                 tokenAddress: tokenAddress, githubUrl: address}));

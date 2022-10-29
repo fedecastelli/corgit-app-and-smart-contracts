@@ -33,11 +33,24 @@ import {providers} from "@web3modal/ethereum";
 //   testnet: true,
 // };
 
+const web3ModalConfig: ConfigOptions = {
+  projectId: '2ea279ee6e975cb61b9e09096d8e38ad',
+  theme: "light",
+  accentColor: 'default',
+  ethereum: {
+    appName: 'CorGit',
+    chains: [
+      chain.goerli
+    ]
+  }
+}
+
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
 root.render(
   <React.StrictMode>
+    <Web3Modal config={web3ModalConfig} />
     <Provider store={store}>
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>

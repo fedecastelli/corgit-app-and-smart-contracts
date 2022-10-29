@@ -8,23 +8,10 @@ import {chain} from "@wagmi/core";
 import {providers} from "@web3modal/ethereum";
 
 
-const web3ModalConfig: ConfigOptions = {
-  projectId: '2ea279ee6e975cb61b9e09096d8e38ad',
-  theme: "light",
-  accentColor: 'default',
-  ethereum: {
-    appName: 'CorGit',
-    chains: [
-      chain.goerli
-    ]
-  }
-}
-
 function App(): JSX.Element {
 
   return (
     <BrowserRouter>
-      <Web3Modal config={web3ModalConfig} />
       <Routes>
         {
           routes.map(r => {

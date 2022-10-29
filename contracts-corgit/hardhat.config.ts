@@ -30,6 +30,11 @@ const config: HardhatUserConfig = {
       url: secrets.nodeUrls.goerli,
       accounts: [secrets.privateKeys.goerli.deployer],
       gasPrice: "auto"
+    },
+    zksync: {
+      url: secrets.nodeUrls.zksync,
+      accounts: [secrets.privateKeys.zksync.deployer],
+      gasPrice: "auto"
     }
   },
   etherscan: {

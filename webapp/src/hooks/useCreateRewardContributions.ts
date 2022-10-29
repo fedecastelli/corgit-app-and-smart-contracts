@@ -19,7 +19,7 @@ export const useCreateRewardContributions = (params: {cgTokenAddress: string}) =
   }>({completed: false, transactionHash: "", error: ""});
   const dispatch = useAppDispatch();
 
-  const { contract, isReady } = useContract({
+  const contract = useContract({
     address: params.cgTokenAddress,
     abi: CONTRACTS_DETAILS[5].CG_PROJECT_ABI
   });

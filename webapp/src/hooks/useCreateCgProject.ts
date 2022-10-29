@@ -20,7 +20,7 @@ export const useCreateCgProject = () => {
   }>({transactionHash: "", error: "", tokenAddress: ""});
   const dispatch = useAppDispatch();
 
-  const { contract, isReady } = useContract({
+  const contract = useContract({
     address: CONTRACTS_DETAILS[5].CG_FACTORY,
     abi: CONTRACTS_DETAILS[5].CG_FACTORY_ABI
   });
@@ -33,7 +33,6 @@ export const useCreateCgProject = () => {
         params.tokenSymbol,
         params.prevContrRewards
       ).then(result => {
-      console.log("result", result);
       return result.wait()
           .then(rc => {
             console.log('RC');

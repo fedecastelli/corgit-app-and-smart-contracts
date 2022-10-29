@@ -56,7 +56,7 @@ export const useLoadCgProject = (cgTokenAddress: string) => {
     error: string
   }>({loading: false, error: ""});
   const dispatch = useAppDispatch();
-  const { contract, isReady } = useContract({
+  const contract = useContract({
     address: cgTokenAddress,
     abi: CONTRACTS_DETAILS[5].CG_PROJECT_ABI
   });

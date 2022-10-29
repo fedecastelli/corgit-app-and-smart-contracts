@@ -7,26 +7,17 @@ import {Provider} from "react-redux";
 import {store} from "./store";
 import {CssBaseline, StyledEngineProvider, ThemeProvider} from "@mui/material";
 import {theme} from "./GlobalStyles";
+import {Web3Modal} from "@web3modal/react";
+import {ConfigOptions} from "@web3modal/core";
 
-// set up sentry only if in a production mode
-// TODO insert sentry
-// if (process.env.NODE_ENV === "production") {
-//   let sentryErrorCache = [];
-//   Sentry.init({
-//     dsn: "https://238a2a93bd804a8ab2e704845dabb150@o904010.ingest.sentry.io/5843261",
-//     integrations: [new Integrations.BrowserTracing()],
-//     beforeSend(event: Event, hint?: EventHint): PromiseLike<Event | null> | Event | null {
-//       if (event.exception.values && event.exception.values.length>0) {
-//         let errValue = event.exception.values[0].value;
-//         if (sentryErrorCache.indexOf(errValue) === -1) {
-//           sentryErrorCache.push(errValue);
-//           return event;
-//         } else return ;
-//       } else return event;
-//     },
-//     tracesSampleRate: 0.0,
-//   });
-// }
+const web3ModalConfig: ConfigOptions = {
+  projectId: '2ea279ee6e975cb61b9e09096d8e38ad',
+  theme: 'dark',
+  accentColor: 'default',
+  ethereum: {
+    appName: 'web3Modal'
+  }
+}
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
@@ -36,6 +27,7 @@ root.render(
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>
           <CssBaseline />
+          <Web3Modal config={web3ModalConfig} />
           <App />
         </ThemeProvider>
       </StyledEngineProvider>

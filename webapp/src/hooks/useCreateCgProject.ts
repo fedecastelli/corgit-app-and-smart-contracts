@@ -30,8 +30,7 @@ export const useCreateCgProject = () => {
 
   const checkNow = (params: CreateCgProjectInterface) => {
     setStatus({transactionHash: "", error: "", tokenAddress: ""});
-    // TODO: understand if this part of code is working
-
+    // call the contract function to generate a new cg token
     contract.connect(params.signer).generate(
         params.tokenName,
         params.tokenSymbol,
@@ -47,33 +46,6 @@ export const useCreateCgProject = () => {
             // const [_addr, _name, _symbol, _percFundingDistribute] = event?.args as NewCgTokenCreatedEvent;
           })
     });
-
-    /*
-    let cgTokenContract = new params.web3.eth.Contract(params.cgFactoryAbi, params.cgFactoryAddress);
-    cgTokenContract.methods.generate(params.tokenName, params.tokenSymbol, params.prevContrRewards).estimateGas({
-      value: 0,  // TODO: understand what I have to put here as value
-      from: params.fromAddress
-    }).then((err, estimatedGas) => {
-      if (err) console.log(err);
-      else {
-        cgTokenContract.methods.generate(params.tokenName, params.tokenSymbol, params.prevContrRewards).send({
-          from: params.fromAddress,
-          to: params.cgFactoryAddress,
-          value: 0,
-          gas: Math.floor(parseInt(estimatedGas) * 1.1)
-        })
-            .on('transactionHash', (hash: string) => {
-              setStatus({transactionHash: hash, error: "", tokenAddress: ""});
-            })
-            .on('receipt', (receipt) => {
-              console.log(receipt);
-            })
-            .on('error', (e: any) => {
-              console.error(e);
-            });
-      }
-    });
-     */
   }
   return {
     ...status, checkNow

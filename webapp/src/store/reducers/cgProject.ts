@@ -1,7 +1,7 @@
 import {BaseReducer} from "./index";
 import {createSlice} from "@reduxjs/toolkit";
 import {clearError} from "../actions/basicActions";
-import {setCgProjectInformation} from "../actions/cgProjectActions";
+import {setTokenAddress} from "../actions/cgProjectActions";
 
 export interface CgProjectReducer extends BaseReducer {
   tokenName: string,
@@ -12,8 +12,7 @@ export interface CgProjectReducer extends BaseReducer {
   unclaimedRewards: number,
   collectedRewards: number,
   distributionReward: number,
-  tokenValue: number,
-  githubUrl: string
+  tokenValue: number
 }
 
 /** -- INITIAL STATE */
@@ -27,8 +26,7 @@ const initialState: CgProjectReducer = {
   treasuryBalance: 0,
   unclaimedRewards: 0,
   collectedRewards: 0,
-  distributionReward: 0,
-  githubUrl: ""
+  distributionReward: 0
 }
 
 /** --- CREATE THE REDUCER */
@@ -38,7 +36,7 @@ export const cgProjectReducerSlice = createSlice({
   initialState,
   reducers: {
     clearError,
-    setCgProjectInformation,
+    setTokenAddress,
   },
   extraReducers:
       (builder) => {
@@ -47,7 +45,7 @@ export const cgProjectReducerSlice = createSlice({
 });
 
 export const cgProjectReducerActions = {
-  setCgProjectInformation: cgProjectReducerSlice.actions.setCgProjectInformation
+  setTokenAddress: cgProjectReducerSlice.actions.setTokenAddress
 }
 
 export default cgProjectReducerSlice.reducer

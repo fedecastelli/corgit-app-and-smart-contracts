@@ -7,10 +7,6 @@ import {Provider} from "react-redux";
 import {store} from "./store";
 import {CssBaseline, StyledEngineProvider, ThemeProvider} from "@mui/material";
 import {theme} from "./GlobalStyles";
-import {Web3Modal} from "@web3modal/react";
-import {ConfigOptions} from "@web3modal/core";
-import {chain} from "@wagmi/core";
-import {providers} from "@web3modal/ethereum";
 
 // export const goarliCustomTestnet = {
 //   id: 5,

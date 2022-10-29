@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {Box, Button, CircularProgress, TextField} from "@mui/material";
-import {useConnectModal} from "@web3modal/react";
 import {theme} from "../../../GlobalStyles";
 import {RocketLaunch} from "@mui/icons-material";
 import {useSearchCgProject} from "../../../hooks/useSearchCgProject";
 import {useDebounce} from "use-debounce";
 import {RouteKey} from "../../../App.Routes";
 import {useNavigate} from 'react-router-dom';
+import {useConnect} from "wagmi";
+import { InjectedConnector } from 'wagmi/connectors/injected';
 
 /**
  *
@@ -19,7 +20,10 @@ const Home: React.FC<IHome> = (props) => {
   const [tokenSearchValue, setTokenSearchValue] = useState<string>("");
   const [searchCgProjectValue] = useDebounce(tokenSearchValue, 500);
   const navigate = useNavigate();
-  const { isOpen, open, close } = useConnectModal();
+  // const { isOpen, open, close } = useConnectModal();
+  const { connect } = useConnect({
+    connector: new InjectedConnector(),
+  })
 
   useEffect(() => {
     if (searchCgProjectValue)
@@ -67,7 +71,7 @@ const Home: React.FC<IHome> = (props) => {
       <Button variant={"contained"}
               color="secondary"
               sx={{color: "white", textTransform: "none", mt: 4}}
-              onClick={open}
+              onClick={() => {connect()}}
       >
         Connect Metamask
       </Button>

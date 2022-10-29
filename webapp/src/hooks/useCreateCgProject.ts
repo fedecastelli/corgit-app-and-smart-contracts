@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {useAppDispatch} from "./reduxHooks";
 import {Signer} from "ethers";
-import {useContract} from "@web3modal/react";
+import {useContract} from "wagmi";
 import {CONTRACTS_DETAILS} from "../utils/constants";
 
 export interface CreateCgProjectInterface {

@@ -6,7 +6,7 @@ import {theme} from "../../../GlobalStyles";
 import {useParams} from "react-router";
 import {useCreateRewardContributions} from "../../../hooks/useCreateRewardContributions";
 import {useNavigate} from "react-router-dom";
-import {useSigner} from "@web3modal/react";
+import {useSigner} from "wagmi";
 
 /**
  *
@@ -19,7 +19,7 @@ const RewardPullRequestViewer: React.FC<IRewardPullRequestViewer> = (props) => {
   const [contributorRewards, setContributorRewards] = useState<{ c: PullRequestContributor, amount: string }[]>([]);
   let { tokenAddress } = useParams();
   const navigate = useNavigate();
-  const {data: signer} = useSigner();
+  const { data: signer, isError, isLoading } = useSigner();
 
   const {completed, transactionHash, error: createContributionError, checkNow: createContribution}
     = useCreateRewardContributions({cgTokenAddress: tokenAddress});

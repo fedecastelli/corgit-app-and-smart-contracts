@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {useAppDispatch} from "./reduxHooks";
-import {useContract} from "@web3modal/react";
+import {useContract} from "wagmi";
 import {CONTRACTS_DETAILS} from "../utils/constants";
 import {Signer} from "ethers";
 

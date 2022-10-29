@@ -4,7 +4,7 @@ import CommonPageWrapper from "../../organisms/Common.PageWrapper/Common.PageWra
 import SingleCreateElement from "../../organisms/Common.PageWrapper/SingleCreateElement";
 import {RocketLaunch} from "@mui/icons-material";
 import {useCreateCgProject} from "../../../hooks/useCreateCgProject";
-import {useAccount, useSigner} from "@web3modal/react";
+import {useAccount, useSigner} from "wagmi";
 
 /**
  *
@@ -19,7 +19,7 @@ const Create: React.FC<ICreate> = (props) => {
   const [projectPrevContRew, setProjectPrevContRew, ] = useState<string>("");
   const {data} = useSigner();
   const {transactionHash, error, tokenAddress, checkNow} = useCreateCgProject();
-  const {account, isReady} = useAccount();
+  const { address, isConnected } = useAccount();
 
 
   return (
@@ -50,7 +50,7 @@ const Create: React.FC<ICreate> = (props) => {
                 startIcon={<RocketLaunch />}
                 onClick={() => {checkNow({
                   tokenName: projectName,
-                  fromAddress: account.address,
+                  fromAddress: address,
                   prevContrRewards: parseInt(projectPrevContRew),
                   tokenSymbol: projectSymbol,
                   signer: data

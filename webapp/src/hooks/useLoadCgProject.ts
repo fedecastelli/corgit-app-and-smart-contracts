@@ -1,10 +1,10 @@
 import {useState} from "react";
 import {useAppDispatch} from "./reduxHooks";
-import {useContract} from "@web3modal/react";
 import {CONTRACTS_DETAILS} from "../utils/constants";
 import {Contract, ethers, providers, Signer} from "ethers";
 import {BigNumber} from "@ethersproject/bignumber";
 import {cgProjectReducerActions} from "../store/reducers/cgProject";
+import {useContract} from "wagmi";
 
 const getCgTokenInformation = async (contract: Contract, signer: Signer, provider: providers.Provider, userAddress: string): Promise<{
   tokenSymbol: string,

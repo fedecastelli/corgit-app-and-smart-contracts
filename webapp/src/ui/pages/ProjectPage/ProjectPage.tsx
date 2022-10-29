@@ -8,9 +8,9 @@ import {useParams} from "react-router";
 import ProjectAddCollateralDialog from "../../organisms/Project.AddCollateralDialog/Project.AddCollateralDialog";
 import CommonBackdrop from "../../atmos/Common.Backdrop/Common.Backdrop";
 import {useLoadCgProject} from "../../../hooks/useLoadCgProject";
-import {useAccount, useNetwork, useProvider, useSigner} from "@web3modal/react";
 import {useLoadProjectUserContributions} from "../../../hooks/useLoadProjectUserContributions";
 import {useAppSelector} from "../../../hooks/reduxHooks";
+import {useAccount, useNetwork, useProvider, useSigner} from "wagmi";
 
 /**
  *
@@ -32,23 +32,22 @@ const ProjectPage: React.FC<IProjectPage> = (props) => {
     projectUserContributions, checkNow: checkProjectContributions } = useLoadProjectUserContributions(tokenAddress);
   const { data: signer, error: errorSigner, isLoading: isLoadingSigner } = useSigner();
 
-  const { provider, isReady: isReadyProvider } = useProvider({chainId: 5});
-  const { account, isReady: isReadyAccount } = useAccount();
-  const { network, isReady: isReadyNetwork } = useNetwork();
+  const provider = useProvider();
+  const { address, isConnected } = useAccount();
 
   const project = useAppSelector(state => state.cgProject);
   const contributions = useAppSelector(state => state.contributions.userContributions);
 
   useEffect(() => {
-    if (tokenAddress && isReadyAccount && isReadyProvider && !isLoadingSigner
-          && isReadyNetwork && provider.network.chainId === 5) {
-      loadProjectData(signer, provider, account.address);
+    if (tokenAddress && isConnected && !isLoadingSigner
+           && provider.network.chainId === 5) {
+      loadProjectData(signer, provider, address);
       checkProjectContributions({
         signer: signer,
-        address: account.address
+        address: address
       });
     }
-  }, [tokenAddress, isReadyAccount, isReadyProvider, isLoadingSigner, isReadyNetwork, provider]);
+  }, [tokenAddress, isConnected, isLoadingSigner, provider]);
 
   useEffect(() => {
     setShowLoader(loadingCgProject || loadingCgProjectContributions);

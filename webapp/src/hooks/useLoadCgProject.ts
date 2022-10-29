@@ -1,11 +1,8 @@
-import Web3 from "web3";
-import {AbiItem} from "web3-utils";
 import {useState} from "react";
 import {useAppDispatch} from "./reduxHooks";
-import {web3} from "./useWeb3";
 import {useContract} from "@web3modal/react";
 import {CONTRACTS_DETAILS} from "../utils/constants";
-import {Contract, ethers, Signer, providers} from "ethers";
+import {Contract, ethers, providers, Signer} from "ethers";
 import {BigNumber} from "@ethersproject/bignumber";
 import {cgProjectReducerActions} from "../store/reducers/cgProject";
 

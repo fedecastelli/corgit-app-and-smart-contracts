@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import CommonPageWrapper from "../../organisms/Common.PageWrapper/Common.PageWrapper";
 import {Box, Button, Grid, Typography} from "@mui/material";
-import {RocketLaunch} from "@mui/icons-material";
 import ProjectSingleDetailCard from "../../atmos/Project.SingleDetailCard/Project.SingleDetailCard";
 import ProjectUserRewardsList from "../../organisms/Project.UserRewardsList/Project.UserRewardsList";
 import {useNavigate} from "react-router-dom";
-import {RouteKey} from "../../../App.Routes";
 import {useParams} from "react-router";
 import ProjectAddCollateralDialog from "../../organisms/Project.AddCollateralDialog/Project.AddCollateralDialog";
 import CommonBackdrop from "../../atmos/Common.Backdrop/Common.Backdrop";
@@ -39,16 +37,18 @@ const ProjectPage: React.FC<IProjectPage> = (props) => {
   const { network, isReady: isReadyNetwork } = useNetwork();
 
   const project = useAppSelector(state => state.cgProject);
+  const contributions = useAppSelector(state => state.contributions.userContributions);
 
   useEffect(() => {
-    if (tokenAddress && isReadyAccount && isReadyProvider && !isLoadingSigner && isReadyNetwork) {
+    if (tokenAddress && isReadyAccount && isReadyProvider && !isLoadingSigner
+          && isReadyNetwork && provider.network.chainId === 5) {
       loadProjectData(signer, provider, account.address);
       checkProjectContributions({
         signer: signer,
         address: account.address
       });
     }
-  }, [tokenAddress, isReadyAccount, isReadyProvider, isLoadingSigner, isReadyNetwork]);
+  }, [tokenAddress, isReadyAccount, isReadyProvider, isLoadingSigner, isReadyNetwork, provider]);
 
   useEffect(() => {
     setShowLoader(loadingCgProject || loadingCgProjectContributions);
@@ -106,7 +106,7 @@ const ProjectPage: React.FC<IProjectPage> = (props) => {
       <Box mt={6}>
         <Typography variant={"h2"}>Your unclaimed rewards</Typography>
         <Box mt={2}>
-          <ProjectUserRewardsList/>
+          <ProjectUserRewardsList contributionList={contributions}/>
         </Box>
       </Box>
 

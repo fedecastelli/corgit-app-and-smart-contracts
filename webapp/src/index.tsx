@@ -10,7 +10,6 @@ import {theme} from "./GlobalStyles";
 import {Web3Modal} from "@web3modal/react";
 import {ConfigOptions} from "@web3modal/core";
 import {chain} from "@wagmi/core";
-import { getDefaultProvider } from 'ethers';
 import {providers} from "@web3modal/ethereum";
 
 // export const goarliCustomTestnet = {
@@ -34,30 +33,11 @@ import {providers} from "@web3modal/ethereum";
 //   testnet: true,
 // };
 
-const web3ModalConfig: ConfigOptions = {
-  projectId: '2ea279ee6e975cb61b9e09096d8e38ad',
-  theme: "light",
-  accentColor: 'default',
-  ethereum: {
-    appName: 'CorGit',
-    autoConnect: true,
-    chains: [
-      // goarliCustomTestnet
-      chain.goerli
-    ],
-    providers: [
-      providers.walletConnectProvider({
-        projectId: "2ea279ee6e975cb61b9e09096d8e38ad",
-      }),
-    ],
-  }
-}
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
 root.render(
   <React.StrictMode>
-    <Web3Modal config={web3ModalConfig} />
     <Provider store={store}>
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>

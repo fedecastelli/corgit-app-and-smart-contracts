@@ -1,4 +1,3 @@
-import {AbiItem} from "web3-utils";
 import {DeploymentContractsDetails} from "./ProjectTypes/Project.types";
 
 export const CONTRACTS_DETAILS: {5: DeploymentContractsDetails} = {

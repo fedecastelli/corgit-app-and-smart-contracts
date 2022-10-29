@@ -1,8 +1,12 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Avatar, Box, Button, TextField, Typography} from "@mui/material";
+import {Box, Button, Typography} from "@mui/material";
 import {PullRequest, PullRequestContributor} from "../../../utils/ProjectTypes/Project.types";
 import SingleContributorLine from "./SingleContributorLine";
 import {theme} from "../../../GlobalStyles";
+import {useParams} from "react-router";
+import {useCreateRewardContributions} from "../../../hooks/useCreateRewardContributions";
+import {useNavigate} from "react-router-dom";
+import {useSigner} from "@web3modal/react";
 
 /**
  *
@@ -13,7 +17,12 @@ import {theme} from "../../../GlobalStyles";
 const RewardPullRequestViewer: React.FC<IRewardPullRequestViewer> = (props) => {
 
   const [contributorRewards, setContributorRewards] = useState<{ c: PullRequestContributor, amount: string }[]>([]);
+  let { tokenAddress } = useParams();
+  const navigate = useNavigate();
+  const {data: signer} = useSigner();
 
+  const {completed, transactionHash, error: createContributionError, checkNow: createContribution}
+    = useCreateRewardContributions({cgTokenAddress: tokenAddress});
 
   useEffect(() => {
     let newContributorsRewards = props.pullRequest.contributors.map((c) => ({
@@ -74,11 +83,18 @@ const RewardPullRequestViewer: React.FC<IRewardPullRequestViewer> = (props) => {
           <Box sx={{width: "100%", display: "flex", justifyContent: "flex-end", alignItems: "center", pt: 4}}>
             <Button variant={"outlined"}
                     color="secondary"
+                    onClick={() => {navigate(`/projects/${tokenAddress}`)}}
                     sx={{textTransform: "none", width: 100}}>
               Cancel
             </Button>
             <Button variant={"contained"}
                     color="secondary"
+                    onClick={() => {createContribution({
+                      githubIds: contributorRewards.map( c => c.c.id),
+                      amountList: contributorRewards.map( c => parseInt(c.amount)),
+                      name: props.pullRequest.title,
+                      signer: signer
+                    })}}
                     sx={{color: "white", textTransform: "none", ml: 2, width: 100}}>
               Reward
             </Button>

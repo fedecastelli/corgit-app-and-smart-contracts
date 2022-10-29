@@ -1,10 +1,7 @@
-import Web3 from "web3";
 import {useState} from "react";
 import {useAppDispatch} from "./reduxHooks";
-import {AbiItem} from "web3-utils";
-import {Provider} from "@web3modal/ethereum";
-import {ContractInterface, ethers, Signer} from "ethers";
-import {useContract, useProvider, useSendTransaction, useSigner} from "@web3modal/react";
+import {Signer} from "ethers";
+import {useContract} from "@web3modal/react";
 import {CONTRACTS_DETAILS} from "../utils/constants";
 
 export interface CreateCgProjectInterface {

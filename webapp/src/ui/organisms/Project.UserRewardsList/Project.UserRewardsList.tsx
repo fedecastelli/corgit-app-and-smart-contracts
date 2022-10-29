@@ -1,6 +1,7 @@
 import React from 'react';
 import {Box} from "@mui/material";
 import RewardLine from "./RewardLine";
+import {ProjectUserContributionInterface} from "../../../hooks/useLoadProjectUserContributions";
 
 /**
  *
@@ -22,13 +23,17 @@ const ProjectUserRewardsList: React.FC<IProjectUserRewardsList> = (props) => {
            borderStyle: "solid"
          }}
     >
-      <RewardLine claimed={true}/>
-      <RewardLine/>
+      {
+        props.contributionList.map((contribution) =>
+          <RewardLine contribution={contribution}/>
+        )
+      }
     </Box>
   );
 };
 
 export interface IProjectUserRewardsList {
+  contributionList: ProjectUserContributionInterface[]
 
 }
 

@@ -1,4 +1,4 @@
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
@@ -79,7 +79,7 @@ contract cgToken is ERC20, AccessControl {
     /**
     * Allow the payment to the given githubID for the specified amount
     **/
-    function pay(uint256[] calldata _githubID, uint256[] calldata _amount, string calldata _name) public onlyRole('PAYER') {
+    function pay(uint256[] calldata _githubID, uint256[] calldata _amount, string calldata _name) public onlyRole(PAYER_ROLE) {
         require(_githubID.length == _amount.length, "Arrays must have equal length");
 
         uint totalAmount = 0;
@@ -128,7 +128,7 @@ contract cgToken is ERC20, AccessControl {
         uint amount = paymentAmounts[_paymentId][githubId].amount;
         require(!paymentAmounts[_paymentId][githubId].paid
                     && amount > 0, "No amount or claimed");
-        transfer(_to, amount);
+        _transfer(address(this), _to, amount);
         paymentAmounts[_paymentId][githubId].paid = true;
         payments[_paymentId].totalTokenClaimed += amount;
         if (payments[_paymentId].totalTokenClaimed == payments[_paymentId].totalTokenAmount)
@@ -150,12 +150,13 @@ contract cgToken is ERC20, AccessControl {
     * Make sure to have the right allowance
     **/
     function contribute() public payable {
+        require(msg.value>0, "No contribution provided");
+        require(percFundingDistributed>0, "Invalud percFundingDistributed");
         uint amountReceived = msg.value;
-        uint amountToRedistribute = amountReceived * 100 / percFundingDistributed;
+        uint amountToRedistribute = amountReceived * percFundingDistributed / 100;
         uint amountToNewMint = amountReceived - amountToRedistribute;
-        uint currentBalance = address(this).balance;
-        uint tokenValue = ( currentBalance + amountToRedistribute ) / totalSupply();
-        uint newTokens = amountToNewMint / tokenValue;
+        uint balanceBeforeReceive = address(this).balance - msg.value;
+        uint newTokens = (amountToNewMint * totalSupply()) / ( balanceBeforeReceive + amountToRedistribute );
         _mint(address(this), newTokens);
     }
 

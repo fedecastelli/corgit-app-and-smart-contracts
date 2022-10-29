@@ -25,7 +25,7 @@ describe("GithubAddressRegister", () => {
 
   it("Should add a new address", async () => {
     let githubId = 123456;
-    let walletToAdd = "0x1234561234561234561212345612345612345612"
+    let walletToAdd = "0x1234561234561234561212345612345612345612";
     await githubAddressRegister.addAddress(
       githubId,
       walletToAdd
@@ -33,5 +33,7 @@ describe("GithubAddressRegister", () => {
     expect(await githubAddressRegister.githubIDToAddress(githubId, 0)).to.be.equal(walletToAdd);
     expect(await githubAddressRegister.addressToGithubID(walletToAdd)).to.be.equal(githubId);
   });
+
+
 
 })

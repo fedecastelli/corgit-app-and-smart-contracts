@@ -5,6 +5,8 @@ import {theme} from "../../../GlobalStyles";
 import {RocketLaunch} from "@mui/icons-material";
 import {useSearchCgProject} from "../../../hooks/useSearchCgProject";
 import {useDebounce} from "use-debounce";
+import {RouteKey} from "../../../App.Routes";
+import { useNavigate } from 'react-router-dom';
 
 /**
  *
@@ -17,6 +19,7 @@ const Home: React.FC<IHome> = (props) => {
 
   const [tokenSearchValue, setTokenSearchValue] = useState<string>("");
   const [searchCgProjectValue] = useDebounce(tokenSearchValue, 500);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (searchCgProjectValue)
@@ -54,7 +57,9 @@ const Home: React.FC<IHome> = (props) => {
       <Button variant={"contained"}
               color="secondary"
               startIcon={<RocketLaunch />}
-              sx={{color: "white", textTransform: "none", mt: 4}}>
+              sx={{color: "white", textTransform: "none", mt: 4}}
+              onClick={() => {navigate(RouteKey.Create)}}
+      >
         Create a New cgToken
       </Button>
 

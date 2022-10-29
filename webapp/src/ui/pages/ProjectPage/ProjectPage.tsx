@@ -12,6 +12,7 @@ import CommonBackdrop from "../../atmos/Common.Backdrop/Common.Backdrop";
 import {useLoadCgProject} from "../../../hooks/useLoadCgProject";
 import {useAccount, useNetwork, useProvider, useSigner} from "@web3modal/react";
 import {useLoadProjectUserContributions} from "../../../hooks/useLoadProjectUserContributions";
+import {useAppSelector} from "../../../hooks/reduxHooks";
 
 /**
  *
@@ -32,9 +33,12 @@ const ProjectPage: React.FC<IProjectPage> = (props) => {
     error: errorLoadCjProjectContributions,
     projectUserContributions, checkNow: checkProjectContributions } = useLoadProjectUserContributions(tokenAddress);
   const { data: signer, error: errorSigner, isLoading: isLoadingSigner } = useSigner();
+
   const { provider, isReady: isReadyProvider } = useProvider({chainId: 5});
   const { account, isReady: isReadyAccount } = useAccount();
   const { network, isReady: isReadyNetwork } = useNetwork();
+
+  const project = useAppSelector(state => state.cgProject);
 
   useEffect(() => {
     if (tokenAddress && isReadyAccount && isReadyProvider && !isLoadingSigner && isReadyNetwork) {
@@ -54,8 +58,8 @@ const ProjectPage: React.FC<IProjectPage> = (props) => {
     <CommonPageWrapper>
       <Grid container>
         <Grid item xs={6}>
-          <Typography variant="h1">Testing Project</Typography>
-          <Typography variant="h2" sx={{mt: 1}}>$cgTTP</Typography>
+          <Typography variant="h1">{project.tokenName}</Typography>
+          <Typography variant="h2" sx={{mt: 1}}>${project.tokenSymbol}</Typography>
           <Typography variant="body1" color="textSecondary">0xabcd...1246</Typography>
         </Grid>
         <Grid item xs={6} textAlign={"right"}>
@@ -79,22 +83,22 @@ const ProjectPage: React.FC<IProjectPage> = (props) => {
       {/* Section of details */}
       <Grid container sx={{mt: 4}} spacing={2}>
         <Grid item xs={4}>
-          <ProjectSingleDetailCard name={"Test"} value={"123,145"}/>
+          <ProjectSingleDetailCard name={"Total Tokens"} value={project.tokenTotalSupply.toString()}/>
         </Grid>
         <Grid item xs={4}>
-          <ProjectSingleDetailCard name={"Test"} value={"123,145"}/>
+          <ProjectSingleDetailCard name={"Treasury balance"} value={project.treasuryBalance.toString()}/>
         </Grid>
         <Grid item xs={4}>
-          <ProjectSingleDetailCard name={"Test"} value={"123,145"}/>
+          <ProjectSingleDetailCard name={"Unclaimed rewards"} value={project.unclaimedRewards.toString()}/>
         </Grid>
         <Grid item xs={4}>
-          <ProjectSingleDetailCard name={"Test"} value={"123,145"}/>
+          <ProjectSingleDetailCard name={"Collected rewards"} value={project.collectedRewards.toString()}/>
         </Grid>
         <Grid item xs={4}>
-          <ProjectSingleDetailCard name={"Test"} value={"123,145"}/>
+          <ProjectSingleDetailCard name={"Distribution reward"} value={project.distributionReward.toString() + "%"}/>
         </Grid>
         <Grid item xs={4}>
-          <ProjectSingleDetailCard name={"Test"} value={"123,145"}/>
+          <ProjectSingleDetailCard name={"$cgTTP value"} value={project.tokenValue + " ETH"}/>
         </Grid>
       </Grid>
 

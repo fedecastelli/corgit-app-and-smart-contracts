@@ -9,13 +9,25 @@ import {CssBaseline, StyledEngineProvider, ThemeProvider} from "@mui/material";
 import {theme} from "./GlobalStyles";
 import {Web3Modal} from "@web3modal/react";
 import {ConfigOptions} from "@web3modal/core";
+import {chain} from "@wagmi/core";
+import { getDefaultProvider } from 'ethers';
 
 const web3ModalConfig: ConfigOptions = {
   projectId: '2ea279ee6e975cb61b9e09096d8e38ad',
-  theme: 'dark',
+  theme: "light",
   accentColor: 'default',
   ethereum: {
-    appName: 'CorGit'
+    appName: 'CorGit',
+    autoConnect: true,
+    chains: [
+      chain.goerli
+    ],
+    // providers: [
+    //   () => ({
+    //     chain: chain.goerli,
+    //     provider: () => getDefaultProvider()
+    //   })
+    // ]
   }
 }
 

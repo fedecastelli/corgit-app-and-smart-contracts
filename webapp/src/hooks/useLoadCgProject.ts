@@ -38,18 +38,18 @@ const getCgTokenInformation = async (contract: Contract, signer: Signer, provide
   const distributionReward = responses[1];
   const name = responses[2];
   const isPayer = responses[3];
-  const totalSupply = (responses[4] as BigNumber).div(BigNumber.from(10).pow(18)).toNumber();
+  const totalSupplyBigNumber = (responses[4] as BigNumber);
+  const totalSupply = totalSupplyBigNumber.div(BigNumber.from(10).pow(18)).toNumber();
   const unclaimedRewards = (responses[5] as BigNumber).div(BigNumber.from(10).pow(18)).toNumber();
   const treasuryBalance =
       (responses[6] as BigNumber).div(BigNumber.from(10).pow(18)).toNumber() - unclaimedRewards;
   const collectedRewards = totalSupply - treasuryBalance - unclaimedRewards;
-  const balance = responses[7];
+  const balance = (responses[7] as BigNumber);
   const balanceInEth = ethers.utils.formatEther(balance);
-  // TODO: calculate ETH token value
-  console.log(balanceInEth);
+  const tokenValue = balance.div(totalSupplyBigNumber);
   return {
     tokenSymbol, distributionReward, name, isPayer, totalSupply, unclaimedRewards, treasuryBalance, collectedRewards,
-    tokenValue: 0
+    tokenValue: tokenValue.toNumber()
   };
 };
 

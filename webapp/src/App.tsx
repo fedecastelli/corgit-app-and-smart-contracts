@@ -5,10 +5,11 @@ import {useAppDispatch, useAppSelector} from "./hooks/reduxHooks";
 import {githubReducerActions} from "./store/reducers/github";
 import {useSearchCgProject} from "./hooks/useSearchCgProject";
 import {useGetPullRequestDetails} from "./hooks/useGetPullRequestDetails";
+import {routes} from "./App.Routes";
 
 
 function App(): JSX.Element {
-
+  /*
   const dispatch = useAppDispatch();
   const addressStore = useAppSelector(state => state.cgProject.tokenAddress);
   const githubUrl = useAppSelector(state => state.cgProject.githubUrl);
@@ -22,13 +23,16 @@ function App(): JSX.Element {
   return (
       // <div onClick={() => {checkNow("git@github.com:fedecastelli/corgit-test-hello-world.git")}}>
       // ciao {address}
-      <div onClick={() => {checkNow(pullRequestGithubUrl)}}>
+      <div onClick={() => {
+        checkNow(pullRequestGithubUrl)
+      }}>
         ciao {pullRequestUrl}<br></br>
         {addressStore}<br></br>
         {githubUrl}
       </div>
   );
-  /*
+}
+*/
   return (
     <BrowserRouter>
       <Routes>
@@ -42,7 +46,6 @@ function App(): JSX.Element {
       </Routes>
     </BrowserRouter>
   );
-   */
 
 }
 

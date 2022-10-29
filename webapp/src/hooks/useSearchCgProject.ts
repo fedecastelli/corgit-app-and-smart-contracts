@@ -4,8 +4,6 @@ import isGithubUrl from "is-github-url";
 import parseGithubUrl from "parse-github-url";
 import axios, {AxiosResponse} from "axios";
 import {cgProjectReducerActions} from "../store/reducers/cgProject";
-import Web3 from "web3";
-import {AbiItem} from "web3-utils";
 import {web3} from "./useWeb3";
 
 const getContractAddressFromGithubRepo = async (repoOwner: string, repoName: string): Promise<string | undefined> => {

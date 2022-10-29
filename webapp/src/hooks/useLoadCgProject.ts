@@ -1,23 +1,90 @@
 import Web3 from "web3";
 import {AbiItem} from "web3-utils";
+import {useState} from "react";
+import {useAppDispatch} from "./reduxHooks";
+import {web3} from "./useWeb3";
+import {useContract} from "@web3modal/react";
+import {CONTRACTS_DETAILS} from "../utils/constants";
+import {Contract, ethers, Signer, providers} from "ethers";
+import {BigNumber} from "@ethersproject/bignumber";
+import {cgProjectReducerActions} from "../store/reducers/cgProject";
 
-const getCgTokenInformation = async (params: {web3: Web3, cgTokenAbi: AbiItem, cgTokenAddress: string}): Promise<{
+const getCgTokenInformation = async (contract: Contract, signer: Signer, provider: providers.Provider, userAddress: string): Promise<{
   tokenSymbol: string,
-  distributionReward: number
+  distributionReward: number,
+  name: string,
+  isPayer: boolean,
+  totalSupply: number,
+  unclaimedRewards: number,
+  treasuryBalance: number,
+  collectedRewards: number,
+  tokenValue: number
 }> => {
 
-  let contract = new params.web3.eth.Contract(params.cgTokenAbi, params.cgTokenAddress);
+  let roleHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("PAYER"));
   let promises = [];
-  promises.push(contract.methods.symbol().call);
-  promises.push(contract.methods.percFundingDistributed().call);
+  promises.push(contract.connect(signer).symbol());
+  promises.push(contract.connect(signer).percFundingDistributed());
+  promises.push(contract.connect(signer).name());
+  promises.push(contract.connect(signer).hasRole(roleHash, userAddress));
+  promises.push(contract.connect(signer).totalSupply());
+  promises.push(contract.connect(signer).lockedTokensForPayments())
+  promises.push(contract.connect(signer).balanceOf(contract.address));
+  // balance del contratto
+  promises.push(provider.getBalance(contract.address));
 
   let responses = await Promise.all(promises);
   const tokenSymbol = responses[0];
   const distributionReward = responses[1];
-
-  return {tokenSymbol: tokenSymbol, distributionReward: distributionReward};
+  const name = responses[2];
+  const isPayer = responses[3];
+  const totalSupply = (responses[4] as BigNumber).div(BigNumber.from(10).pow(18)).toNumber();
+  const unclaimedRewards = (responses[5] as BigNumber).div(BigNumber.from(10).pow(18)).toNumber();
+  const treasuryBalance =
+      (responses[6] as BigNumber).div(BigNumber.from(10).pow(18)).toNumber() - unclaimedRewards;
+  const collectedRewards = totalSupply - treasuryBalance - unclaimedRewards;
+  const balance = responses[7];
+  const balanceInEth = ethers.utils.formatEther(balance);
+  // TODO: calculate ETH token value
+  console.log(balanceInEth);
+  return {
+    tokenSymbol, distributionReward, name, isPayer, totalSupply, unclaimedRewards, treasuryBalance, collectedRewards,
+    tokenValue: 0
+  };
 };
 
-export const useLoadCgProject = () => {
-
+export const useLoadCgProject = (cgTokenAddress: string) => {
+  const [status, setStatus] = useState<{
+    loading: boolean,
+    error: string
+  }>({loading: false, error: ""});
+  const dispatch = useAppDispatch();
+  const { contract, isReady } = useContract({
+    address: cgTokenAddress,
+    abi: CONTRACTS_DETAILS[5].CG_PROJECT_ABI
+  });
+  const checkNow = (signer: Signer, provider: providers.Provider, userAddress: string,) => {
+    setStatus({loading: true, error: ""});
+    if (!ethers.utils.isAddress(cgTokenAddress)) setStatus({loading: false, error: "Invalid Ethereum address"});
+    else {
+      getCgTokenInformation(contract, signer, provider, userAddress).then(cgTokenInformation => {
+        dispatch(cgProjectReducerActions.setCgProjectInformation({
+          tokenAddress: cgTokenAddress,
+          tokenSymbol: cgTokenInformation.tokenSymbol,
+          tokenTotalSupply: cgTokenInformation.totalSupply,
+          tokenName: cgTokenInformation.name,
+          tokenValue: cgTokenInformation.tokenValue,
+          isPayer: cgTokenInformation.isPayer,
+          treasuryBalance: cgTokenInformation.treasuryBalance,
+          unclaimedRewards: cgTokenInformation.unclaimedRewards,
+          distributionReward: cgTokenInformation.distributionReward,
+          collectedRewards: cgTokenInformation.collectedRewards
+        }))
+        setStatus({loading: false, error: ""});
+      })
+    }
+  };
+  return {
+    ...status, checkNow
+  };
 };

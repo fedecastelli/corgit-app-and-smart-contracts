@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {useAppDispatch} from "./reduxHooks";
 import {Contract, Signer} from "ethers";
-import {useContract} from "@web3modal/react";
+import {useContract} from "wagmi";
 import {CONTRACTS_DETAILS} from "../utils/constants";
 import {contributionsReducerActions} from "../store/reducers/contributions";
 
@@ -86,7 +86,7 @@ export const useLoadProjectUserContributions = (cgTokenAddress: string) => {
     projectUserContributions: ProjectUserContributionInterface[]
   }>({loading: false, error: "", projectUserContributions: [] as ProjectUserContributionInterface[]});
   const dispatch = useAppDispatch();
-  const { contract, isReady } = useContract({
+  const contract = useContract({
     address: CONTRACTS_DETAILS[5].GITHUB_ADDRESS_REGISTER,
     abi: CONTRACTS_DETAILS[5].GITHUB_ADDRESS_REGISTER_ABI
   });

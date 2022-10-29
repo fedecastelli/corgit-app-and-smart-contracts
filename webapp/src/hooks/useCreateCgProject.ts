@@ -1,10 +1,7 @@
-import Web3 from "web3";
 import {useState} from "react";
 import {useAppDispatch} from "./reduxHooks";
-import {AbiItem} from "web3-utils";
-import {Provider} from "@web3modal/ethereum";
-import {ContractInterface, ethers, Signer} from "ethers";
-import {useContract, useProvider, useSendTransaction, useSigner} from "@web3modal/react";
+import {Signer} from "ethers";
+import {useContract} from "wagmi";
 import {CONTRACTS_DETAILS} from "../utils/constants";
 
 export interface CreateCgProjectInterface {
@@ -23,7 +20,7 @@ export const useCreateCgProject = () => {
   }>({transactionHash: "", error: "", tokenAddress: ""});
   const dispatch = useAppDispatch();
 
-  const { contract, isReady } = useContract({
+  const contract = useContract({
     address: CONTRACTS_DETAILS[5].CG_FACTORY,
     abi: CONTRACTS_DETAILS[5].CG_FACTORY_ABI
   });
@@ -36,7 +33,6 @@ export const useCreateCgProject = () => {
         params.tokenSymbol,
         params.prevContrRewards
       ).then(result => {
-      console.log("result", result);
       return result.wait()
           .then(rc => {
             console.log('RC');

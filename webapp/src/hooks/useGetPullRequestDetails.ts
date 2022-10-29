@@ -1,6 +1,5 @@
 import {useState} from "react";
 import {useAppDispatch} from "./reduxHooks";
-import isGithubUrl from "is-github-url";
 import parseGithubUrl from "parse-github-url";
 import {Octokit} from "@octokit/rest";
 import {PullRequest, PullRequestContributor, PullRequestState} from "../utils/ProjectTypes/Project.types";

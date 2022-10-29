@@ -13,7 +13,7 @@ const CommonPageWrapper: React.FC<ICommonPageWrapper> = (props) => {
     <Box width={"100vw"} minHeight={"100vh"}>
       <CommonHeader/>
       <Box display={"flex"} width="100%" alignItems={"center"} justifyContent={"center"} sx={{pt: 4}}>
-        <Box width={600}>
+        <Box width={props.customWidth ? props.customWidth : 800}>
           {props.children}
         </Box>
       </Box>
@@ -23,6 +23,7 @@ const CommonPageWrapper: React.FC<ICommonPageWrapper> = (props) => {
 
 export interface ICommonPageWrapper {
   children?: JSX.Element | JSX.Element[];
+  customWidth?: string | number
 }
 
 export default CommonPageWrapper;

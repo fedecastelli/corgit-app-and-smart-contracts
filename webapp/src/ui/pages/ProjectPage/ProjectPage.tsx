@@ -72,13 +72,18 @@ const ProjectPage: React.FC<IProjectPage> = (props) => {
           >
             Add Collateral
           </Button>
-          <Button variant={"contained"}
-                  color="secondary"
-                  sx={{color: "white", textTransform: "none", ml: 2}}
-                  onClick={() => {navigate(`/project/${tokenAddress}/reward`)}}
-          >
-            Reward
-          </Button>
+          {
+            project.isPayer ?
+              <Button variant={"contained"}
+                      color="secondary"
+                      sx={{color: "white", textTransform: "none", ml: 2}}
+                      onClick={() => {navigate(`/project/${tokenAddress}/reward`)}}
+              >
+                Reward
+              </Button>
+              :
+              ""
+          }
         </Grid>
       </Grid>
 

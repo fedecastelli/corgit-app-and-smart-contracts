@@ -86,7 +86,7 @@ const loadProjectUserContributions = async (params: {
       paid: userPayments[position].paid
     });
   }
-  return {githubId: githubId, contributions: contributions};
+  return {githubId: githubId, contributions: contributions.reverse()};
 }
 
 export const useLoadProjectUserContributions = (cgTokenAddress: string) => {

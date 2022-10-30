@@ -7,6 +7,7 @@ import {useParams} from "react-router";
 import {useCreateRewardContributions} from "../../../hooks/useCreateRewardContributions";
 import {useNavigate} from "react-router-dom";
 import {useSigner} from "wagmi";
+import {BigNumber} from "@ethersproject/bignumber";
 
 /**
  *
@@ -83,7 +84,7 @@ const RewardPullRequestViewer: React.FC<IRewardPullRequestViewer> = (props) => {
           <Box sx={{width: "100%", display: "flex", justifyContent: "flex-end", alignItems: "center", pt: 4}}>
             <Button variant={"outlined"}
                     color="secondary"
-                    onClick={() => {navigate(`/projects/${tokenAddress}`)}}
+                    onClick={() => {navigate(`/project/${tokenAddress}`)}}
                     sx={{textTransform: "none", width: 100}}>
               Cancel
             </Button>
@@ -91,7 +92,7 @@ const RewardPullRequestViewer: React.FC<IRewardPullRequestViewer> = (props) => {
                     color="secondary"
                     onClick={() => {createContribution({
                       githubIds: contributorRewards.map( c => c.c.id),
-                      amountList: contributorRewards.map( c => parseInt(c.amount)),
+                      amountList: contributorRewards.map( c => BigNumber.from(parseInt(c.amount)).mul(BigNumber.from(10).pow(18))),
                       name: props.pullRequest.title,
                       signer: signer
                     })}}

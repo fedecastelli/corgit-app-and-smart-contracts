@@ -3,10 +3,11 @@ import {useAppDispatch} from "./reduxHooks";
 import {useContract} from "wagmi";
 import {CONTRACTS_DETAILS} from "../utils/constants";
 import {Signer} from "ethers";
+import {BigNumber} from "@ethersproject/bignumber";
 
 export interface CreateRewardContributionsInterface {
   githubIds: number[],
-  amountList: number[],
+  amountList: BigNumber[],
   name: string,
   signer: Signer
 }
@@ -27,6 +28,7 @@ export const useCreateRewardContributions = (params: {cgTokenAddress: string}) =
   const checkNow = (params: CreateRewardContributionsInterface) => {
     setStatus({transactionHash: "", error: "", completed: false});
     // call the contract function to create rewards
+    console.log(params);
     contract.connect(params.signer).pay(params.githubIds, params.amountList, params.name)
       .then(tx => {
         console.log(tx);

@@ -18,16 +18,17 @@ export const useClaimRewards = (params: {cgTokenAddress: string}) => {
   const checkNow = (params: {toAddress: string, paymentId: number, signer: Signer}) => {
     setStatus({completed: false, transactionHash: "", error: ""});
     contract.connect(params.signer).collectPayment(params.toAddress, params.paymentId)
-        .on('transactionHash', (hash: string) => {
-          setStatus({completed: false, transactionHash: hash, error: ""});
+        .then(tx => {
+          console.log(tx);
+          setStatus({completed: false, transactionHash: tx.hash, error: ""});
+          return tx.wait();
         })
-        .on('receipt', (receipt) => {
+        .then(rc => {
           setStatus({completed: true, transactionHash: "", error: ""});
         })
-        .on('error', (e: any) => {
-          console.error(e);
+        .catch(error => {
           setStatus({completed: true, error: "Transaction error", transactionHash: ""});
-        })
+        });
   }
   return {
     ...status, checkNow

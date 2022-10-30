@@ -10,11 +10,11 @@ import {Grid, TextField, Typography} from "@mui/material";
 const SingleCreateElement: React.FC<ISingleCreateElement> = (props) => {
   return (
     <Grid container sx={{my: 2}}>
-      <Grid xs={6}>
+      <Grid item xs={6}>
         <Typography variant="h4">{props.name}</Typography>
         <Typography variant="body2" color={"textSecondary"}>{props.description}</Typography>
       </Grid>
-      <Grid xs={6}>
+      <Grid item xs={6}>
         <TextField variant="standard"
                    fullWidth
                    value={props.value}

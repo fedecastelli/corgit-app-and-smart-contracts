@@ -1,8 +1,15 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Avatar, Box, Button, TextField, Typography} from "@mui/material";
+import {Box, Button, CircularProgress, Typography} from "@mui/material";
 import {PullRequest, PullRequestContributor} from "../../../utils/ProjectTypes/Project.types";
 import SingleContributorLine from "./SingleContributorLine";
 import {theme} from "../../../GlobalStyles";
+import {useParams} from "react-router";
+import {useCreateRewardContributions} from "../../../hooks/useCreateRewardContributions";
+import {useNavigate} from "react-router-dom";
+import {useSigner} from "wagmi";
+import {BigNumber} from "@ethersproject/bignumber";
+import {format} from "date-fns";
+import {useAppSelector} from "../../../hooks/reduxHooks";
 
 /**
  *
@@ -13,7 +20,18 @@ import {theme} from "../../../GlobalStyles";
 const RewardPullRequestViewer: React.FC<IRewardPullRequestViewer> = (props) => {
 
   const [contributorRewards, setContributorRewards] = useState<{ c: PullRequestContributor, amount: string }[]>([]);
+  let { tokenAddress } = useParams();
+  const navigate = useNavigate();
+  const { data: signer, isError, isLoading } = useSigner();
+  const tokenSymbol = useAppSelector(state => state.cgProject?.tokenSymbol);
 
+  const {completed, transactionHash, error: createContributionError, checkNow: createContribution}
+    = useCreateRewardContributions({cgTokenAddress: tokenAddress});
+
+  useEffect(() => {
+    if (completed)
+      navigate(`/project/${tokenAddress}`);
+  }, [completed]);
 
   useEffect(() => {
     let newContributorsRewards = props.pullRequest.contributors.map((c) => ({
@@ -35,7 +53,9 @@ const RewardPullRequestViewer: React.FC<IRewardPullRequestViewer> = (props) => {
   return (
     <Box display={"flex"} flexDirection={"column"} sx={{width: "100%"}}>
       <Typography variant="h3">{props.pullRequest.title}</Typography>
-      <Typography variant="body1">Closed {props.pullRequest.closedAt}</Typography>
+      <Typography variant="body1">Closed {
+          format(new Date(props.pullRequest.closedAt * 1000), "d LLL yyyy @ h:mm aaa")
+        }</Typography>
       <Typography variant="body2" sx={{mt: 2, mb: 4}}>
         Total of <strong>{props.pullRequest.contributors.length} contributors</strong>
       </Typography>
@@ -62,7 +82,7 @@ const RewardPullRequestViewer: React.FC<IRewardPullRequestViewer> = (props) => {
               <Typography variant="h4">TOTAL</Typography>
             </Box>
             <Typography variant="h4">{totalAmount}</Typography>
-            <Typography variant="body2" sx={{pl: 1}}>$cgTTP</Typography>
+            <Typography variant="body2" sx={{pl: 1}}>${tokenSymbol}</Typography>
           </Box>
           :
           ""
@@ -71,18 +91,30 @@ const RewardPullRequestViewer: React.FC<IRewardPullRequestViewer> = (props) => {
       {/* REWARD BUTTON */}
       {
         props.pullRequest.contributors.length > 0 ?
-          <Box sx={{width: "100%", display: "flex", justifyContent: "flex-end", alignItems: "center", pt: 4}}>
-            <Button variant={"outlined"}
-                    color="secondary"
-                    sx={{textTransform: "none", width: 100}}>
-              Cancel
-            </Button>
-            <Button variant={"contained"}
-                    color="secondary"
-                    sx={{color: "white", textTransform: "none", ml: 2, width: 100}}>
-              Reward
-            </Button>
-          </Box>
+            transactionHash ?
+              <Box sx={{width: "100%", display: "flex", justifyContent: "flex-end", alignItems: "center", pt: 4}}>
+                <CircularProgress size={28}/>
+              </Box>
+              :
+              <Box sx={{width: "100%", display: "flex", justifyContent: "flex-end", alignItems: "center", pt: 4}}>
+                <Button variant={"outlined"}
+                        color="secondary"
+                        onClick={() => {navigate(`/project/${tokenAddress}`)}}
+                        sx={{textTransform: "none", width: 100}}>
+                  Cancel
+                </Button>
+                <Button variant={"contained"}
+                        color="secondary"
+                        onClick={() => {createContribution({
+                          githubIds: contributorRewards.map( c => c.c.id),
+                          amountList: contributorRewards.map( c => BigNumber.from(parseInt(c.amount)).mul(BigNumber.from(10).pow(18))),
+                          name: props.pullRequest.title,
+                          signer: signer
+                        })}}
+                        sx={{color: "white", textTransform: "none", ml: 2, width: 100}}>
+                  Reward
+                </Button>
+              </Box>
           :
           ""
       }

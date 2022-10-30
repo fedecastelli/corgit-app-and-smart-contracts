@@ -1,13 +1,10 @@
-import Web3 from "web3";
-import {AbiItem} from "web3-utils";
 import {useState} from "react";
 import {useAppDispatch} from "./reduxHooks";
-import {web3} from "./useWeb3";
-import {useContract} from "@web3modal/react";
 import {CONTRACTS_DETAILS} from "../utils/constants";
-import {Contract, ethers, Signer, providers} from "ethers";
+import {Contract, ethers, providers, Signer} from "ethers";
 import {BigNumber} from "@ethersproject/bignumber";
 import {cgProjectReducerActions} from "../store/reducers/cgProject";
+import {useContract} from "wagmi";
 
 const getCgTokenInformation = async (contract: Contract, signer: Signer, provider: providers.Provider, userAddress: string): Promise<{
   tokenSymbol: string,
@@ -38,18 +35,21 @@ const getCgTokenInformation = async (contract: Contract, signer: Signer, provide
   const distributionReward = responses[1];
   const name = responses[2];
   const isPayer = responses[3];
-  const totalSupply = (responses[4] as BigNumber).div(BigNumber.from(10).pow(18)).toNumber();
+  const totalSupplyBigNumber = (responses[4] as BigNumber);
+  const totalSupply = totalSupplyBigNumber.div(BigNumber.from(10).pow(18)).toNumber();
   const unclaimedRewards = (responses[5] as BigNumber).div(BigNumber.from(10).pow(18)).toNumber();
   const treasuryBalance =
       (responses[6] as BigNumber).div(BigNumber.from(10).pow(18)).toNumber() - unclaimedRewards;
   const collectedRewards = totalSupply - treasuryBalance - unclaimedRewards;
-  const balance = responses[7];
+  const balance = (responses[7] as BigNumber);
   const balanceInEth = ethers.utils.formatEther(balance);
-  // TODO: calculate ETH token value
-  console.log(balanceInEth);
+  console.log("balance.toHexString", balance.toHexString());
+  console.log("totalSupplyBigNumber", totalSupplyBigNumber.toHexString());
+  const tokenValue = parseFloat(ethers.utils.formatEther(balance)) / parseFloat(ethers.utils.formatEther(totalSupplyBigNumber));
+
   return {
     tokenSymbol, distributionReward, name, isPayer, totalSupply, unclaimedRewards, treasuryBalance, collectedRewards,
-    tokenValue: 0
+    tokenValue: tokenValue
   };
 };
 
@@ -59,7 +59,7 @@ export const useLoadCgProject = (cgTokenAddress: string) => {
     error: string
   }>({loading: false, error: ""});
   const dispatch = useAppDispatch();
-  const { contract, isReady } = useContract({
+  const contract = useContract({
     address: cgTokenAddress,
     abi: CONTRACTS_DETAILS[5].CG_PROJECT_ABI
   });

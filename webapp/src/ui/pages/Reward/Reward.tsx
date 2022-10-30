@@ -16,6 +16,7 @@ import RewardPullRequestViewer from "../../organisms/Reward.PullRequestViewer/Re
 const Reward: React.FC<IReward> = (props) => {
 
   const [urlSearchValue, setUrlSearchValue] = useState<string>("");
+  const tokenName = useAppSelector(state => state.cgProject?.tokenName);
   const [searchCgProjectValue] = useDebounce(urlSearchValue, 500);
   const {loading, error, pullRequestUrl, checkNow} = useGetPullRequestDetails();
 
@@ -29,7 +30,7 @@ const Reward: React.FC<IReward> = (props) => {
   return (
     <CommonPageWrapper>
       <Box display="flex" flexDirection={"column"} alignItems={"center"}>
-        <Typography variant={"h1"}>Testing project</Typography>
+        <Typography variant={"h1"}>{tokenName}</Typography>
         <Typography variant={"h3"}>- Reward Page -</Typography>
 
         <Box width={500} sx={{mt: 4}}>
@@ -40,7 +41,7 @@ const Reward: React.FC<IReward> = (props) => {
                      InputProps={{
                        ...( loading ? {endAdornment: <CircularProgress size={16}/>}: {} )
                      }}
-                     placeholder={"Search by Github Repo URL or Token Address"} />
+                     placeholder={"Enter the Github Pull Request URL"} />
         </Box>
 
         {

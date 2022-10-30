@@ -60,7 +60,9 @@ const ProjectPage: React.FC<IProjectPage> = (props) => {
         <Grid item xs={6}>
           <Typography variant="h1">{project.tokenName}</Typography>
           <Typography variant="h2" sx={{mt: 1}}>${project.tokenSymbol}</Typography>
-          <Typography variant="body1" color="textSecondary">0xabcd...1246</Typography>
+          <Typography variant="body1" color="textSecondary">{
+            tokenAddress.substring(0,6) + "..." + tokenAddress.substring(38)
+          }</Typography>
         </Grid>
         <Grid item xs={6} textAlign={"right"}>
           <Button variant={"outlined"}

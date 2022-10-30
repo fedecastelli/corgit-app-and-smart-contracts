@@ -24,9 +24,12 @@ const ProjectUserRewardsList: React.FC<IProjectUserRewardsList> = (props) => {
          }}
     >
       {
-        props.contributionList.map((contribution) =>
-          <RewardLine contribution={contribution}/>
-        )
+        props.contributionList.length === 0 ?
+          "You don't have any paid contribution yet in this project"
+          :
+          props.contributionList.map((contribution) =>
+            <RewardLine contribution={contribution}/>
+          )
       }
     </Box>
   );

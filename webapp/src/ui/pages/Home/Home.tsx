@@ -6,7 +6,7 @@ import {useSearchCgProject} from "../../../hooks/useSearchCgProject";
 import {useDebounce} from "use-debounce";
 import {RouteKey} from "../../../App.Routes";
 import {useNavigate} from 'react-router-dom';
-import {useConnect} from "wagmi";
+import {useAccount, useConnect} from "wagmi";
 import { InjectedConnector } from 'wagmi/connectors/injected';
 
 /**
@@ -20,7 +20,7 @@ const Home: React.FC<IHome> = (props) => {
   const [tokenSearchValue, setTokenSearchValue] = useState<string>("");
   const [searchCgProjectValue] = useDebounce(tokenSearchValue, 500);
   const navigate = useNavigate();
-  // const { isOpen, open, close } = useConnectModal();
+  const account = useAccount();
   const { connect } = useConnect({
     connector: new InjectedConnector(),
     chainId: 5
@@ -69,13 +69,18 @@ const Home: React.FC<IHome> = (props) => {
         Create a New cgToken
       </Button>
 
-      <Button variant={"contained"}
-              color="secondary"
-              sx={{color: "white", textTransform: "none", mt: 4}}
-              onClick={() => {connect()}}
-      >
-        Connect Metamask
-      </Button>
+      {
+        account ?
+          ""
+          :
+          <Button variant={"contained"}
+                  color="secondary"
+                  sx={{color: "white", textTransform: "none", mt: 4}}
+                  onClick={() => {connect()}}
+          >
+            Connect Metamask
+          </Button>
+      }
 
       <Box position={"absolute"} zIndex={-1} bottom={0} left={0}>
         <img src={"/img/CorGitHomeImage.png"}/>

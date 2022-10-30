@@ -10,6 +10,9 @@ import {ProjectUserContributionInterface} from "../../../hooks/useLoadProjectUse
  * @constructor
  */
 const RewardLine: React.FC<IRewardLine> = (props) => {
+
+
+
   return (
     <Grid container sx={{py: 0.5}} alignItems={"center"}>
       <Grid item xs={5}>

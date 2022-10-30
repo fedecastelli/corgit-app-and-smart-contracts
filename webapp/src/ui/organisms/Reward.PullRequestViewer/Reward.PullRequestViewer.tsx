@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Box, Button, Typography} from "@mui/material";
+import {Box, Button, CircularProgress, Typography} from "@mui/material";
 import {PullRequest, PullRequestContributor} from "../../../utils/ProjectTypes/Project.types";
 import SingleContributorLine from "./SingleContributorLine";
 import {theme} from "../../../GlobalStyles";
@@ -24,6 +24,11 @@ const RewardPullRequestViewer: React.FC<IRewardPullRequestViewer> = (props) => {
 
   const {completed, transactionHash, error: createContributionError, checkNow: createContribution}
     = useCreateRewardContributions({cgTokenAddress: tokenAddress});
+
+  useEffect(() => {
+    if (completed)
+      navigate(`/project/${tokenAddress}`);
+  }, [completed]);
 
   useEffect(() => {
     let newContributorsRewards = props.pullRequest.contributors.map((c) => ({
@@ -81,25 +86,30 @@ const RewardPullRequestViewer: React.FC<IRewardPullRequestViewer> = (props) => {
       {/* REWARD BUTTON */}
       {
         props.pullRequest.contributors.length > 0 ?
-          <Box sx={{width: "100%", display: "flex", justifyContent: "flex-end", alignItems: "center", pt: 4}}>
-            <Button variant={"outlined"}
-                    color="secondary"
-                    onClick={() => {navigate(`/project/${tokenAddress}`)}}
-                    sx={{textTransform: "none", width: 100}}>
-              Cancel
-            </Button>
-            <Button variant={"contained"}
-                    color="secondary"
-                    onClick={() => {createContribution({
-                      githubIds: contributorRewards.map( c => c.c.id),
-                      amountList: contributorRewards.map( c => BigNumber.from(parseInt(c.amount)).mul(BigNumber.from(10).pow(18))),
-                      name: props.pullRequest.title,
-                      signer: signer
-                    })}}
-                    sx={{color: "white", textTransform: "none", ml: 2, width: 100}}>
-              Reward
-            </Button>
-          </Box>
+            transactionHash ?
+              <Box sx={{width: "100%", display: "flex", justifyContent: "flex-end", alignItems: "center", pt: 4}}>
+                <CircularProgress size={28}/>
+              </Box>
+              :
+              <Box sx={{width: "100%", display: "flex", justifyContent: "flex-end", alignItems: "center", pt: 4}}>
+                <Button variant={"outlined"}
+                        color="secondary"
+                        onClick={() => {navigate(`/project/${tokenAddress}`)}}
+                        sx={{textTransform: "none", width: 100}}>
+                  Cancel
+                </Button>
+                <Button variant={"contained"}
+                        color="secondary"
+                        onClick={() => {createContribution({
+                          githubIds: contributorRewards.map( c => c.c.id),
+                          amountList: contributorRewards.map( c => BigNumber.from(parseInt(c.amount)).mul(BigNumber.from(10).pow(18))),
+                          name: props.pullRequest.title,
+                          signer: signer
+                        })}}
+                        sx={{color: "white", textTransform: "none", ml: 2, width: 100}}>
+                  Reward
+                </Button>
+              </Box>
           :
           ""
       }

@@ -1,4 +1,4 @@
-#CorGit
+# CorGit
 
 Tokenize your OpenSource project, to proportionally reward past, present and future contributors
 

@@ -70,7 +70,7 @@ const Home: React.FC<IHome> = (props) => {
       </Button>
 
       {
-        account ?
+        account.address ?
           ""
           :
           <Button variant={"contained"}

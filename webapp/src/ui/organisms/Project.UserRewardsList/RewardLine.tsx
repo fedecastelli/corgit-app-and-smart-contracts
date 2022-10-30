@@ -1,7 +1,13 @@
-import React from 'react';
-import {Box, Button, Grid, Typography} from "@mui/material";
+import React, {useEffect} from 'react';
+import {Box, Button, CircularProgress, Grid, Typography} from "@mui/material";
 import {Check} from "@mui/icons-material";
-import {ProjectUserContributionInterface} from "../../../hooks/useLoadProjectUserContributions";
+import {
+  ProjectUserContributionInterface,
+  useLoadProjectUserContributions
+} from "../../../hooks/useLoadProjectUserContributions";
+import {useClaimRewards} from "../../../hooks/useClaimRewards";
+import {useAccount, useSigner} from 'wagmi';
+import {useParams} from "react-router";
 
 /**
  *
@@ -11,7 +17,21 @@ import {ProjectUserContributionInterface} from "../../../hooks/useLoadProjectUse
  */
 const RewardLine: React.FC<IRewardLine> = (props) => {
 
+  const { address, isConnected } = useAccount();
+  let { tokenAddress } = useParams();
+  const {data: signer} = useSigner({chainId: 5});
+  const {completed, transactionHash, error, checkNow} = useClaimRewards({cgTokenAddress: tokenAddress});
+  let { loading: loadingCgProjectContributions,
+    error: errorLoadCjProjectContributions,
+    projectUserContributions, checkNow:   checkProjectContributions } = useLoadProjectUserContributions(tokenAddress);
 
+  useEffect(() => {
+    if (completed)
+      checkProjectContributions({
+        signer: signer,
+        address: address
+      });
+  }, [completed])
 
   return (
     <Grid container sx={{py: 0.5}} alignItems={"center"}>
@@ -30,13 +50,20 @@ const RewardLine: React.FC<IRewardLine> = (props) => {
               <Check color={"success"}/>
             </Box>
             :
-            <Button variant={"contained"}
-                    color="secondary"
-                    sx={{color: "white", textTransform: "none", ml: 2}}>
-              Claim
-            </Button>
+            transactionHash ?
+              <CircularProgress size={20}/>
+              :
+              <Button variant={"contained"}
+                      color="secondary"
+                      onClick={() => {checkNow({
+                        toAddress:address,
+                        paymentId: props.contribution.paymentId,
+                        signer: signer
+                      })}}
+                      sx={{color: "white", textTransform: "none", ml: 2}}>
+                Claim
+              </Button>
         }
-
       </Grid>
     </Grid>
   );

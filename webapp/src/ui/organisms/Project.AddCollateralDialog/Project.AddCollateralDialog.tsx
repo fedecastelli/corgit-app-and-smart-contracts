@@ -119,7 +119,7 @@ const ProjectAddCollateralDialog: React.FC<IProjectAddCollateralDialog> = (props
                       sx={{textTransform: "none"}}
                       variant={"outlined"}
               >Cancel</Button>
-              <Button onClick={() => {alert("check");checkNow({
+              <Button onClick={() => {checkNow({
                         amountETH: parseFloat(valueEth),
                         signer
                       })}}

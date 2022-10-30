@@ -133,6 +133,8 @@ contract cgToken is ERC20, AccessControl {
         payments[_paymentId].totalTokenClaimed += amount;
         if (payments[_paymentId].totalTokenClaimed == payments[_paymentId].totalTokenAmount)
             payments[_paymentId].claimCompleted = true;
+
+        lockedTokensForPayments -= amount;
         emit PaymentClaimed(githubId, _paymentId, amount);
     }
 

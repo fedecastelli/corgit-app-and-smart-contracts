@@ -1,5 +1,6 @@
 import {
-  Button,
+  Box,
+  Button, CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -10,8 +11,12 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {TransitionProps} from "@mui/material/transitions";
+import {useAddCollateral} from "../../../hooks/useAddCollateral";
+import {useAccount, useSigner} from "wagmi";
+import {useParams} from "react-router";
+import {useLoadProjectUserContributions} from "../../../hooks/useLoadProjectUserContributions";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -32,11 +37,28 @@ const ProjectAddCollateralDialog: React.FC<IProjectAddCollateralDialog> = (props
 
   const [valueEth, setValueEth] = useState<string>("0");
 
+  const { address, isConnected } = useAccount();
+  let { tokenAddress } = useParams();
+  const {data: signer} = useSigner({chainId: 5});
+  const {completed, transactionHash, error, checkNow} = useAddCollateral({cgTokenAddress: tokenAddress});
+  let { loading: loadingCgProjectContributions,
+    error: errorLoadCjProjectContributions,
+    projectUserContributions, checkNow: checkProjectContributions } = useLoadProjectUserContributions(tokenAddress);
+
+  useEffect(() => {
+    if (completed) {
+      checkProjectContributions({
+        signer: signer,
+        address: address
+      });
+      props.close();
+    }
+  }, [completed]);
+
   return (
     <Dialog
       open={props.show}
       TransitionComponent={Transition}
-      keepMounted
       onClose={props.close}
     >
       <DialogTitle>
@@ -84,16 +106,27 @@ const ProjectAddCollateralDialog: React.FC<IProjectAddCollateralDialog> = (props
           <Grid item xs={6} sx={{textAlign: "right"}}>+120 %</Grid>
         </Grid>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={props.close}
-                color="secondary"
-                sx={{textTransform: "none"}}
-                variant={"outlined"}
-        >Cancel</Button>
-        <Button onClick={() => {}}
-                color="secondary"
-                sx={{color: "white", textTransform: "none", ml: 2}}
-                variant={"contained"}>Confirm</Button>
+      <DialogActions sx={{pr: 3, pb: 3}}>
+        {
+          transactionHash ?
+            <CircularProgress size={24}/>
+            :
+            <Box>
+              <Button onClick={props.close}
+                      color="secondary"
+                      sx={{textTransform: "none"}}
+                      variant={"outlined"}
+              >Cancel</Button>
+              <Button onClick={() => {alert("check");checkNow({
+                        amountETH: parseFloat(valueEth),
+                        signer
+                      })}}
+                      color="secondary"
+                      sx={{color: "white", textTransform: "none", ml: 2}}
+                      variant={"contained"}>Confirm</Button>
+            </Box>
+        }
+
       </DialogActions>
     </Dialog>
   );

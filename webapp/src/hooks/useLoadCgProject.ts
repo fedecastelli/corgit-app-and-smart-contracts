@@ -43,10 +43,13 @@ const getCgTokenInformation = async (contract: Contract, signer: Signer, provide
   const collectedRewards = totalSupply - treasuryBalance - unclaimedRewards;
   const balance = (responses[7] as BigNumber);
   const balanceInEth = ethers.utils.formatEther(balance);
-  const tokenValue = balance.div(totalSupplyBigNumber);
+  console.log("balance.toHexString", balance.toHexString());
+  console.log("totalSupplyBigNumber", totalSupplyBigNumber.toHexString());
+  const tokenValue = parseFloat(ethers.utils.formatEther(balance)) / parseFloat(ethers.utils.formatEther(totalSupplyBigNumber));
+
   return {
     tokenSymbol, distributionReward, name, isPayer, totalSupply, unclaimedRewards, treasuryBalance, collectedRewards,
-    tokenValue: tokenValue.toNumber()
+    tokenValue: tokenValue
   };
 };
 

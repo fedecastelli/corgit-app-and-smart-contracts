@@ -8,6 +8,7 @@ import {useCreateRewardContributions} from "../../../hooks/useCreateRewardContri
 import {useNavigate} from "react-router-dom";
 import {useSigner} from "wagmi";
 import {BigNumber} from "@ethersproject/bignumber";
+import {format} from "date-fns";
 
 /**
  *
@@ -50,7 +51,9 @@ const RewardPullRequestViewer: React.FC<IRewardPullRequestViewer> = (props) => {
   return (
     <Box display={"flex"} flexDirection={"column"} sx={{width: "100%"}}>
       <Typography variant="h3">{props.pullRequest.title}</Typography>
-      <Typography variant="body1">Closed {props.pullRequest.closedAt}</Typography>
+      <Typography variant="body1">Closed {
+          format(new Date(props.pullRequest.closedAt * 1000), "d LLL yyyy @ h:mm aaa")
+        }</Typography>
       <Typography variant="body2" sx={{mt: 2, mb: 4}}>
         Total of <strong>{props.pullRequest.contributors.length} contributors</strong>
       </Typography>

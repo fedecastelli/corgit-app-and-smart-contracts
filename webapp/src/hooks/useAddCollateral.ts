@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {useAppDispatch} from "./reduxHooks";
 import {CONTRACTS_DETAILS} from "../utils/constants";
-import {Signer} from "ethers";
+import {ethers, Signer} from "ethers";
 import {useContract} from "wagmi";
 
 export const useAddCollateral = (params: {cgTokenAddress: string}) => {
@@ -15,9 +15,12 @@ export const useAddCollateral = (params: {cgTokenAddress: string}) => {
     address: params.cgTokenAddress,
     abi: CONTRACTS_DETAILS[5].CG_PROJECT_ABI
   });
+
   const checkNow = (params: {amountETH: number, signer: Signer}) => {
     setStatus({completed: false, transactionHash: "", error: ""});
-    contract.connect(params.signer).contribute(params.amountETH)
+    contract.connect(params.signer).contribute({
+      value: ethers.utils.parseEther(params.amountETH.toString())
+    })
         .then(tx => {
           console.log(tx);
           setStatus({completed: false, transactionHash: tx.hash, error: ""});

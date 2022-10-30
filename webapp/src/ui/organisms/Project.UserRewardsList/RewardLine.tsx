@@ -8,6 +8,8 @@ import {
 import {useClaimRewards} from "../../../hooks/useClaimRewards";
 import {useAccount, useSigner} from 'wagmi';
 import {useParams} from "react-router";
+import { format } from 'date-fns';
+import {useAppSelector} from "../../../hooks/reduxHooks";
 
 /**
  *
@@ -25,6 +27,8 @@ const RewardLine: React.FC<IRewardLine> = (props) => {
     error: errorLoadCjProjectContributions,
     projectUserContributions, checkNow:   checkProjectContributions } = useLoadProjectUserContributions(tokenAddress);
 
+  const tokenSymbol = useAppSelector(state => state.cgProject?.tokenSymbol);
+
   useEffect(() => {
     if (completed)
       checkProjectContributions({
@@ -37,10 +41,12 @@ const RewardLine: React.FC<IRewardLine> = (props) => {
     <Grid container sx={{py: 0.5}} alignItems={"center"}>
       <Grid item xs={5}>
         <Typography variant="body1">{props.contribution.name}</Typography>
-        <Typography fontSize={14} color="textSecondary">{props.contribution.creation}</Typography>
+        <Typography fontSize={14} color="textSecondary">{
+          format(new Date(props.contribution.creation * 1000), "d LLL yyyy @ h:mm aaa")
+        }</Typography>
       </Grid>
       <Grid item xs={5} sx={{textAlign: "right"}}>
-        <Typography variant="h4">{props.contribution.amount} $cgTTP</Typography>
+        <Typography variant="h4">{props.contribution.amount} ${tokenSymbol}</Typography>
       </Grid>
       <Grid item xs={2} sx={{textAlign: "right"}}>
         {

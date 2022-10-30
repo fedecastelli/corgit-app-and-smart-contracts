@@ -1,12 +1,6 @@
 # CorGit
 
-
-Description TBA
-
-# How it works
-
-[TDB]
-
+Tokenize your OpenSource project, to proportionally reward past, present and future contributors.
 
 # How to Use this repo
 

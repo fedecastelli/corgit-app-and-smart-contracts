@@ -28,7 +28,7 @@ const ProjectUserRewardsList: React.FC<IProjectUserRewardsList> = (props) => {
           "You don't have any paid contribution yet in this project"
           :
           props.contributionList.map((contribution) =>
-            <RewardLine contribution={contribution}/>
+            <RewardLine key={contribution.paymentId} contribution={contribution}/>
           )
       }
     </Box>

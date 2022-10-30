@@ -24,6 +24,7 @@ const ProjectPage: React.FC<IProjectPage> = (props) => {
   const [showLoader, setShowLoader] = useState<boolean>(false);
   const navigate = useNavigate();
   let { tokenAddress } = useParams();
+  const tokenSymbol = useAppSelector(state => state.cgProject?.tokenSymbol);
   let { loading: loadingCgProject,
     error: errorLoadCjProject,
     checkNow: loadProjectData } = useLoadCgProject(tokenAddress);
@@ -97,7 +98,7 @@ const ProjectPage: React.FC<IProjectPage> = (props) => {
           <ProjectSingleDetailCard name={"Distribution reward"} value={project.distributionReward.toString() + "%"}/>
         </Grid>
         <Grid item xs={4}>
-          <ProjectSingleDetailCard name={"$cgTTP value"} value={project.tokenValue + " ETH"}/>
+          <ProjectSingleDetailCard name={`$${tokenSymbol} value`} value={(project.tokenValue < 0.0001 ? "<0.000" : project.tokenValue) + " ETH"}/>
         </Grid>
       </Grid>
 

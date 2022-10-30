@@ -9,6 +9,7 @@ import {useClaimRewards} from "../../../hooks/useClaimRewards";
 import {useAccount, useSigner} from 'wagmi';
 import {useParams} from "react-router";
 import { format } from 'date-fns';
+import {useAppSelector} from "../../../hooks/reduxHooks";
 
 /**
  *
@@ -25,6 +26,8 @@ const RewardLine: React.FC<IRewardLine> = (props) => {
   let { loading: loadingCgProjectContributions,
     error: errorLoadCjProjectContributions,
     projectUserContributions, checkNow:   checkProjectContributions } = useLoadProjectUserContributions(tokenAddress);
+
+  const tokenSymbol = useAppSelector(state => state.cgProject?.tokenSymbol);
 
   useEffect(() => {
     if (completed)
@@ -43,7 +46,7 @@ const RewardLine: React.FC<IRewardLine> = (props) => {
         }</Typography>
       </Grid>
       <Grid item xs={5} sx={{textAlign: "right"}}>
-        <Typography variant="h4">{props.contribution.amount} $cgTTP</Typography>
+        <Typography variant="h4">{props.contribution.amount} ${tokenSymbol}</Typography>
       </Grid>
       <Grid item xs={2} sx={{textAlign: "right"}}>
         {

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Avatar, Box, TextField, Typography} from "@mui/material";
 import {PullRequestContributor} from "../../../utils/ProjectTypes/Project.types";
+import {useAppSelector} from "../../../hooks/reduxHooks";
 
 /**
  *
@@ -9,6 +10,8 @@ import {PullRequestContributor} from "../../../utils/ProjectTypes/Project.types"
  * @constructor
  */
 const SingleContributorLine: React.FC<ISingleContributorLine> = (props) => {
+
+  const tokenSymbol = useAppSelector(state => state.cgProject?.tokenSymbol);
 
   const handleChange = (e) => {
     props.editReward(e.target.value);
@@ -28,7 +31,7 @@ const SingleContributorLine: React.FC<ISingleContributorLine> = (props) => {
                  value={props.contributorReward}
                  onChange={handleChange}
       />
-      <Typography variant="body2" sx={{pl: 1}}>$cgTTP</Typography>
+      <Typography variant="body2" sx={{pl: 1}}>${tokenSymbol}</Typography>
     </Box>
   );
 };

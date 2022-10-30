@@ -17,6 +17,7 @@ import {useAddCollateral} from "../../../hooks/useAddCollateral";
 import {useAccount, useSigner} from "wagmi";
 import {useParams} from "react-router";
 import {useLoadProjectUserContributions} from "../../../hooks/useLoadProjectUserContributions";
+import {useAppSelector} from "../../../hooks/reduxHooks";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -36,6 +37,7 @@ const Transition = React.forwardRef(function Transition(
 const ProjectAddCollateralDialog: React.FC<IProjectAddCollateralDialog> = (props) => {
 
   const [valueEth, setValueEth] = useState<string>("0");
+  const tokenSymbol = useAppSelector(state => state.cgProject?.tokenSymbol);
 
   const { address, isConnected } = useAccount();
   let { tokenAddress } = useParams();
@@ -98,7 +100,7 @@ const ProjectAddCollateralDialog: React.FC<IProjectAddCollateralDialog> = (props
               <strong>After the operation completes</strong>
             </Typography>
           </Grid>
-          <Grid item xs={6}><Typography variant={"body1"}>$cgTTP value</Typography></Grid>
+          <Grid item xs={6}><Typography variant={"body1"}>${tokenSymbol} value</Typography></Grid>
           <Grid item xs={6} sx={{textAlign: "right"}}>0,00000 ETH</Grid>
           <Grid item xs={6}>Amount Token minted</Grid>
           <Grid item xs={6} sx={{textAlign: "right"}}>12,456</Grid>

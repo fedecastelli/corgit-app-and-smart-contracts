@@ -1,8 +1,8 @@
 import {useState} from "react";
 import {useAppDispatch} from "./reduxHooks";
-import {useContract} from "@web3modal/react";
 import {CONTRACTS_DETAILS} from "../utils/constants";
 import {Signer} from "ethers";
+import {useContract} from "wagmi";
 
 export const useAddCollateral = (params: {cgTokenAddress: string}) => {
   const [status, setStatus] = useState<{
@@ -11,7 +11,7 @@ export const useAddCollateral = (params: {cgTokenAddress: string}) => {
     error: string
   }>({completed: false, transactionHash: "", error: ""});
   const dispatch = useAppDispatch();
-  const { contract, isReady } = useContract({
+  const contract = useContract({
     address: params.cgTokenAddress,
     abi: CONTRACTS_DETAILS[5].CG_PROJECT_ABI
   });

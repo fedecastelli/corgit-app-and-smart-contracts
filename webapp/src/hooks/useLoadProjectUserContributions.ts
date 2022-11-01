@@ -5,6 +5,7 @@ import {useContract} from "wagmi";
 import {CONTRACTS_DETAILS} from "../utils/constants";
 import {contributionsReducerActions} from "../store/reducers/contributions";
 import {BigNumber} from "@ethersproject/bignumber";
+import {Web3Provider} from "zksync-web3";
 
 export interface LoadProjectUserContributionsInterface {
   signer: Signer,
@@ -96,19 +97,28 @@ export const useLoadProjectUserContributions = (cgTokenAddress: string) => {
     projectUserContributions: ProjectUserContributionInterface[]
   }>({loading: false, error: "", projectUserContributions: [] as ProjectUserContributionInterface[]});
   const dispatch = useAppDispatch();
-  const contract = useContract({
-    address: CONTRACTS_DETAILS[5].GITHUB_ADDRESS_REGISTER,
-    abi: CONTRACTS_DETAILS[5].GITHUB_ADDRESS_REGISTER_ABI
-  });
-  const cgTokenContract = useContract({
-    address: cgTokenAddress,
-    abi: CONTRACTS_DETAILS[5].CG_PROJECT_ABI
-  });
+  // const contract = useContract({
+  //   address: CONTRACTS_DETAILS[5].GITHUB_ADDRESS_REGISTER,
+  //   abi: CONTRACTS_DETAILS[5].GITHUB_ADDRESS_REGISTER_ABI
+  // });
+  let contract = new Contract(
+    CONTRACTS_DETAILS[5].GITHUB_ADDRESS_REGISTER,
+    CONTRACTS_DETAILS[280].GITHUB_ADDRESS_REGISTER_ABI
+  );
+  // const cgTokenContract = useContract({
+  //   address: cgTokenAddress,
+  //   abi: CONTRACTS_DETAILS[5].CG_PROJECT_ABI
+  // });
+  let cgTokenContract = new Contract(
+    cgTokenAddress,
+    CONTRACTS_DETAILS[280].CG_PROJECT_ABI
+  );
 
   const checkNow = (params: LoadProjectUserContributionsInterface) => {
     setStatus({loading: true, error: "", projectUserContributions: []});
+    let signer = (new Web3Provider(window.ethereum)).getSigner();
     loadProjectUserContributions({
-      signer: params.signer,
+      signer: signer,
       address: params.address,
       cgTokenContract: cgTokenContract,
       githubContract: contract})

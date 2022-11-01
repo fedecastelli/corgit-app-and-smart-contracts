@@ -1,6 +1,7 @@
 import {
   Box,
-  Button, CircularProgress,
+  Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,

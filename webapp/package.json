@@ -42,7 +42,8 @@
     "uuid": "^8.3.2",
     "wagmi": "^0.7.8",
     "web-vitals": "^2.1.4",
-    "web3": "^1.7.4"
+    "web3": "^1.7.4",
+    "zksync-web3": "^0.11.1"
   },
   "scripts": {
     "start": "env-cmd -f .env.dev craco start",

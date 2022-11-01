@@ -3,6 +3,7 @@ import {useAppDispatch} from "./reduxHooks";
 import {CONTRACTS_DETAILS} from "../utils/constants";
 import {ethers, Signer} from "ethers";
 import {useContract} from "wagmi";
+import {Contract, Web3Provider} from "zksync-web3";
 
 export const useAddCollateral = (params: {cgTokenAddress: string}) => {
   const [status, setStatus] = useState<{
@@ -11,14 +12,22 @@ export const useAddCollateral = (params: {cgTokenAddress: string}) => {
     error: string
   }>({completed: false, transactionHash: "", error: ""});
   const dispatch = useAppDispatch();
-  const contract = useContract({
-    address: params.cgTokenAddress,
-    abi: CONTRACTS_DETAILS[5].CG_PROJECT_ABI
-  });
+
+
+  // const contract = useContract({
+  //   address: params.cgTokenAddress,
+  //   abi: CONTRACTS_DETAILS[5].CG_PROJECT_ABI
+  // });
+
+  let contract = new Contract(
+    params.cgTokenAddress,
+    CONTRACTS_DETAILS[280].CG_PROJECT_ABI
+  );
 
   const checkNow = (params: {amountETH: number, signer: Signer}) => {
     setStatus({completed: false, transactionHash: "", error: ""});
-    contract.connect(params.signer).contribute({
+    let signer = (new Web3Provider(window.ethereum)).getSigner();
+    contract.connect(signer).contribute({
       value: ethers.utils.parseEther(params.amountETH.toString())
     })
         .then(tx => {

@@ -8,27 +8,6 @@ import {store} from "./store";
 import {CssBaseline, StyledEngineProvider, ThemeProvider} from "@mui/material";
 import {theme} from "./GlobalStyles";
 
-// export const goarliCustomTestnet = {
-//   id: 5,
-//   name: "Goerli",
-//   network: "goerli",
-//   nativeCurrency: {
-//     decimals: 18,
-//     name: "GoerliETH",
-//     symbol: "GoerliETH",
-//   },
-//   rpcUrls: {
-//     default: "---",
-//   },
-//   blockExplorers: {
-//     default: {
-//       name: "Goerli explorer",
-//       url: "https://blockscout.chiadochain.net",
-//     },
-//   },
-//   testnet: true,
-// };
-
 
 const container = document.getElementById('root');
 const root = createRoot(container!);

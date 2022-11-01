@@ -7,7 +7,7 @@ import {useDebounce} from "use-debounce";
 import {RouteKey} from "../../../App.Routes";
 import {useNavigate} from 'react-router-dom';
 import {useAccount, useConnect} from "wagmi";
-import { InjectedConnector } from 'wagmi/connectors/injected';
+import {InjectedConnector} from 'wagmi/connectors/injected';
 
 /**
  *

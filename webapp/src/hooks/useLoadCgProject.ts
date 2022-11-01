@@ -5,6 +5,7 @@ import {Contract, ethers, providers, Signer} from "ethers";
 import {BigNumber} from "@ethersproject/bignumber";
 import {cgProjectReducerActions} from "../store/reducers/cgProject";
 import {useContract} from "wagmi";
+import {Web3Provider} from "zksync-web3";
 
 const getCgTokenInformation = async (contract: Contract, signer: Signer, provider: providers.Provider, userAddress: string): Promise<{
   tokenSymbol: string,
@@ -59,15 +60,21 @@ export const useLoadCgProject = (cgTokenAddress: string) => {
     error: string
   }>({loading: false, error: ""});
   const dispatch = useAppDispatch();
-  const contract = useContract({
-    address: cgTokenAddress,
-    abi: CONTRACTS_DETAILS[5].CG_PROJECT_ABI
-  });
+  // const contract = useContract({
+  //   address: cgTokenAddress,
+  //   abi: CONTRACTS_DETAILS[5].CG_PROJECT_ABI
+  // });
+  let contract = new Contract(
+    cgTokenAddress,
+    CONTRACTS_DETAILS[280].CG_PROJECT_ABI
+  );
+
   const checkNow = (signer: Signer, provider: providers.Provider, userAddress: string,) => {
     setStatus({loading: true, error: ""});
+    let signerZk = (new Web3Provider(window.ethereum)).getSigner();
     if (!ethers.utils.isAddress(cgTokenAddress)) setStatus({loading: false, error: "Invalid Ethereum address"});
     else {
-      getCgTokenInformation(contract, signer, provider, userAddress).then(cgTokenInformation => {
+      getCgTokenInformation(contract, signerZk, provider, userAddress).then(cgTokenInformation => {
         dispatch(cgProjectReducerActions.setCgProjectInformation({
           tokenAddress: cgTokenAddress,
           tokenSymbol: cgTokenInformation.tokenSymbol,
@@ -84,6 +91,7 @@ export const useLoadCgProject = (cgTokenAddress: string) => {
       })
     }
   };
+
   return {
     ...status, checkNow
   };

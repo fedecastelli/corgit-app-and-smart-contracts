@@ -2,12 +2,10 @@ import React from 'react';
 import {BrowserRouter} from "react-router-dom";
 import {Route, Routes} from "react-router";
 import {routes} from "./App.Routes";
-import {chain} from "@wagmi/core";
 import {configureChains, createClient, defaultChains, WagmiConfig} from "wagmi";
-import {getDefaultProvider} from "ethers";
-import { publicProvider } from 'wagmi/providers/public';
+import {publicProvider} from 'wagmi/providers/public';
 import {InjectedConnector} from "wagmi/connectors/injected";
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
+import {WalletConnectConnector} from 'wagmi/connectors/walletConnect';
 
 const { chains, provider } = configureChains(defaultChains, [publicProvider()])
 
@@ -15,6 +13,27 @@ const { chains, provider } = configureChains(defaultChains, [publicProvider()])
 //   autoConnect: true,
 //   provider: getDefaultProvider(),
 // })
+
+// export const goarliCustomTestnet = {
+//   id: 5,
+//   name: "Goerli",
+//   network: "goerli",
+//   nativeCurrency: {
+//     decimals: 18,
+//     name: "GoerliETH",
+//     symbol: "GoerliETH",
+//   },
+//   rpcUrls: {
+//     default: "---",
+//   },
+//   blockExplorers: {
+//     default: {
+//       name: "Goerli explorer",
+//       url: "https://blockscout.chiadochain.net",
+//     },
+//   },
+//   testnet: true,
+// };
 
 const client = createClient({
   autoConnect: true,

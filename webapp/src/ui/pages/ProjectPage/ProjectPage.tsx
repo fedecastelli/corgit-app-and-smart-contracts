@@ -10,7 +10,7 @@ import CommonBackdrop from "../../atmos/Common.Backdrop/Common.Backdrop";
 import {useLoadCgProject} from "../../../hooks/useLoadCgProject";
 import {useLoadProjectUserContributions} from "../../../hooks/useLoadProjectUserContributions";
 import {useAppSelector} from "../../../hooks/reduxHooks";
-import {useAccount, useNetwork, useProvider, useSigner} from "wagmi";
+import {useAccount, useProvider, useSigner} from "wagmi";
 
 /**
  *
@@ -40,8 +40,9 @@ const ProjectPage: React.FC<IProjectPage> = (props) => {
   const contributions = useAppSelector(state => state.contributions.userContributions);
 
   useEffect(() => {
-    if (tokenAddress && isConnected && !isLoadingSigner && signer
-           && provider.network.chainId === 5) {
+    // if (tokenAddress && isConnected && !isLoadingSigner && signer
+    //        && provider.network.chainId === 280) {
+    if (tokenAddress && isConnected && !isLoadingSigner) {
       loadProjectData(signer, provider, address);
       checkProjectContributions({
         signer: signer,

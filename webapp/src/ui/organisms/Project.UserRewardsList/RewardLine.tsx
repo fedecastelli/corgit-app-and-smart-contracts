@@ -8,7 +8,7 @@ import {
 import {useClaimRewards} from "../../../hooks/useClaimRewards";
 import {useAccount, useSigner} from 'wagmi';
 import {useParams} from "react-router";
-import { format } from 'date-fns';
+import {format} from 'date-fns';
 import {useAppSelector} from "../../../hooks/reduxHooks";
 
 /**

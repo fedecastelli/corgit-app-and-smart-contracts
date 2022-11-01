@@ -1,8 +1,10 @@
 import {useState} from "react";
 import {useAppDispatch} from "./reduxHooks";
 import {Signer} from "ethers";
-import {useContract} from "wagmi";
+import {useContract, useProvider} from "wagmi";
 import {CONTRACTS_DETAILS} from "../utils/constants";
+import { Contract, Web3Provider } from "zksync-web3";
+
 
 export interface CreateCgProjectInterface {
   fromAddress: string,
@@ -20,15 +22,20 @@ export const useCreateCgProject = () => {
   }>({transactionHash: "", error: "", tokenAddress: ""});
   const dispatch = useAppDispatch();
 
-  const contract = useContract({
-    address: CONTRACTS_DETAILS[5].CG_FACTORY,
-    abi: CONTRACTS_DETAILS[5].CG_FACTORY_ABI
-  });
+  // const contract = useContract({
+  //     address: CONTRACTS_DETAILS[280].CG_FACTORY,
+  //     abi: CONTRACTS_DETAILS[280].CG_FACTORY_ABI
+  //   });
+
+  let contract = new Contract(
+    CONTRACTS_DETAILS[280].CG_FACTORY,
+    CONTRACTS_DETAILS[280].CG_FACTORY_ABI
+  );
 
   const checkNow = (params: CreateCgProjectInterface) => {
     setStatus({transactionHash: "", error: "", tokenAddress: ""});
-    // call the contract function to generate a new cg token
-    contract.connect(params.signer).generate(
+    let signer = (new Web3Provider(window.ethereum)).getSigner();
+      contract.connect(signer).generate(
         params.tokenName,
         params.tokenSymbol,
         params.prevContrRewards

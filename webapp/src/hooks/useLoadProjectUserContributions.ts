@@ -54,7 +54,6 @@ const loadProjectUserContributions = async (params: {
   const userPayments: {amount: number, paid: boolean}[] = [] ;
   if (userPaymentsPromises.length !== 0) {
     let responses = await Promise.all(userPaymentsPromises);
-    console.log(responses);
     responses.forEach(response => {
       userPayments.push({
         amount: response.amount.div(BigNumber.from(10).pow(18)).toNumber(),
@@ -107,7 +106,7 @@ export const useLoadProjectUserContributions = (cgTokenAddress: string) => {
   //   abi: CONTRACTS_DETAILS[5].GITHUB_ADDRESS_REGISTER_ABI
   // });
   let contract = new Contract(
-    CONTRACTS_DETAILS[5].GITHUB_ADDRESS_REGISTER,
+    CONTRACTS_DETAILS[280].GITHUB_ADDRESS_REGISTER,
     CONTRACTS_DETAILS[280].GITHUB_ADDRESS_REGISTER_ABI
   );
   // const cgTokenContract = useContract({
@@ -128,8 +127,6 @@ export const useLoadProjectUserContributions = (cgTokenAddress: string) => {
       cgTokenContract: cgTokenContract,
       githubContract: contract})
         .then(userContributions => {
-          console.log('User contributions');
-          console.log(userContributions);
           if (userContributions.githubId === undefined) {
             setStatus({loading: false, error: "No githubId connected to the given address", projectUserContributions: []});
           } else {

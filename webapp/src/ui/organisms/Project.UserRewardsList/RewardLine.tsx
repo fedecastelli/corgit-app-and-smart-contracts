@@ -6,10 +6,11 @@ import {
   useLoadProjectUserContributions
 } from "../../../hooks/useLoadProjectUserContributions";
 import {useClaimRewards} from "../../../hooks/useClaimRewards";
-import {useAccount, useSigner} from 'wagmi';
+import {useAccount, useProvider, useSigner} from 'wagmi';
 import {useParams} from "react-router";
 import {format} from 'date-fns';
 import {useAppSelector} from "../../../hooks/reduxHooks";
+import {useLoadCgProject} from "../../../hooks/useLoadCgProject";
 
 /**
  *
@@ -23,6 +24,10 @@ const RewardLine: React.FC<IRewardLine> = (props) => {
   let { tokenAddress } = useParams();
   const {data: signer} = useSigner({chainId: 5});
   const {completed, transactionHash, error, checkNow} = useClaimRewards({cgTokenAddress: tokenAddress});
+  const provider = useProvider();
+  let { loading: loadingCgProject,
+    error: errorLoadCjProject,
+    checkNow: loadProjectData } = useLoadCgProject(tokenAddress);
   let { loading: loadingCgProjectContributions,
     error: errorLoadCjProjectContributions,
     projectUserContributions, checkNow:   checkProjectContributions } = useLoadProjectUserContributions(tokenAddress);
@@ -30,11 +35,14 @@ const RewardLine: React.FC<IRewardLine> = (props) => {
   const tokenSymbol = useAppSelector(state => state.cgProject?.tokenSymbol);
 
   useEffect(() => {
-    if (completed)
+    if (completed) {
+      loadProjectData(signer, provider, address);
       checkProjectContributions({
         signer: signer,
         address: address
       });
+    }
+    
   }, [completed])
 
   return (

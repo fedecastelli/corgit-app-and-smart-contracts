@@ -28,7 +28,12 @@ const loadProjectUserContributions = async (params: {
   signer: Signer, address: string, githubContract: Contract, cgTokenContract: Contract}):
     Promise<{githubId: number | undefined, contributions: ProjectUserContributionInterface[]}> => {
   // get github id connect to the address parameter
-  const githubId = await params.githubContract.connect(params.signer).addressToGithubID(params.address);
+  let githubId;
+  try {
+    githubId = await params.githubContract.connect(params.signer).addressToGithubID(params.address);
+  } catch (e) {
+    return {githubId: undefined, contributions: []};
+  }
   if (githubId === undefined) return {githubId: undefined, contributions: []};
   // get the list id payment ids associated with the github id got from the blockchain
   const paymentIds = [];
